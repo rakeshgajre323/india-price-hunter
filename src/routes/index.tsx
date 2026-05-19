@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Search, Bell, ShoppingBasket, Zap } from "lucide-react";
+import { ArrowRight, Search, Bell, ShoppingBasket, Zap, Star, ShieldCheck, TrendingDown, IndianRupee } from "lucide-react";
 import { categories } from "@/data/categories";
 import { platforms } from "@/data/platforms";
 import { products } from "@/data/products";
@@ -29,35 +29,53 @@ function Index() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-primary/8 via-background to-accent/10">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-2 md:py-24">
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-primary/10 via-background to-accent/10">
+        <div className="pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full bg-primary/15 blur-3xl" aria-hidden />
+        <div className="pointer-events-none absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-accent/20 blur-3xl" aria-hidden />
+        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-2 md:py-24">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
               <Zap className="h-3.5 w-3.5" fill="currentColor" />
-              Quick-commerce price tracker for India
+              India's #1 quick-commerce price tracker
             </div>
             <h1 className="mt-5 text-4xl font-bold tracking-tight md:text-6xl">
-              Don't overpay on <span className="text-primary">10-minute</span> deliveries.
+              Stop overpaying. <span className="text-primary">Save up to 40%</span> on every grocery order.
             </h1>
-            <p className="mt-5 max-w-lg text-base text-muted-foreground md:text-lg">
-              QuickCompare checks Zepto, Blinkit, Instamart, Amazon Fresh, Flipkart Minutes and BB Now side by side so you can order from whichever app is cheapest right now.
+            <p className="mt-5 max-w-xl text-base text-muted-foreground md:text-lg">
+              QuickCompare instantly checks Zepto, Blinkit, Instamart, Amazon Fresh, Flipkart Minutes and BB Now side by side — so you always order from the cheapest app in your pincode, in under 10 seconds.
             </p>
+
+            <ul className="mt-6 grid gap-2 text-sm text-foreground/80 sm:grid-cols-2">
+              <li className="flex items-center gap-2"><TrendingDown className="h-4 w-4 text-primary" /> Live prices across 6 apps</li>
+              <li className="flex items-center gap-2"><IndianRupee className="h-4 w-4 text-primary" /> Cheapest-basket calculator</li>
+              <li className="flex items-center gap-2"><Bell className="h-4 w-4 text-primary" /> Free price-drop alerts</li>
+              <li className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-primary" /> Pincode-aware, no signup</li>
+            </ul>
+
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link to="/search" className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90">
-                <Search className="h-4 w-4" /> Search a product
+              <Link to="/search" className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:opacity-90">
+                <Search className="h-4 w-4" /> Start saving — it's free
               </Link>
               <Link to="/compare" className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold hover:border-primary hover:text-primary">
                 <ShoppingBasket className="h-4 w-4" /> Compare a basket
               </Link>
             </div>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
-              <span>6 platforms</span>
-              <span>·</span>
-              <span>{products.length}+ tracked SKUs</span>
-              <span>·</span>
-              <span>Pincode-aware</span>
-              <span>·</span>
-              <span>Price drop alerts</span>
+
+            {/* Social proof */}
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <div className="flex items-center gap-1.5">
+                <div className="flex">
+                  {[0,1,2,3,4].map((i) => (
+                    <Star key={i} className="h-4 w-4 fill-primary text-primary" />
+                  ))}
+                </div>
+                <span className="text-sm font-semibold">4.8/5</span>
+                <span className="text-xs text-muted-foreground">from 12,000+ shoppers</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <ShieldCheck className="h-4 w-4 text-primary" />
+                Trusted in 80+ Indian cities
+              </div>
             </div>
           </div>
 
@@ -89,6 +107,27 @@ function Index() {
                   );
                 })}
               </div>
+            </div>
+            <div className="absolute -bottom-4 -left-4 hidden rounded-2xl border border-border bg-card px-4 py-3 shadow-lg sm:block">
+              <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Today's avg savings</div>
+              <div className="text-lg font-bold text-primary">₹186 / order</div>
+            </div>
+          </div>
+        </div>
+
+        {/* As featured in / platforms strip */}
+        <div className="relative border-t border-border/60 bg-background/60 backdrop-blur">
+          <div className="mx-auto max-w-7xl px-4 py-6">
+            <div className="text-center text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Comparing prices across India's top quick-commerce apps
+            </div>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+              {platforms.map((p) => (
+                <div key={p.id} className="flex items-center gap-2 opacity-80 transition hover:opacity-100">
+                  <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: p.color }} />
+                  <span className="text-sm font-semibold tracking-tight">{p.name}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
