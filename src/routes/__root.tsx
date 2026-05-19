@@ -77,11 +77,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "QuickCompare India — Compare quick-commerce prices" },
       { name: "description", content: "Compare prices across Zepto, Blinkit, Instamart, Amazon Fresh, Flipkart Minutes and BB Now before you order." },
-      { property: "og:title", content: "QuickCompare India" },
-      { property: "og:description", content: "Compare quick-commerce prices in India in one place." },
+      { property: "og:title", content: "QuickCompare India — Compare quick-commerce prices" },
+      { property: "og:description", content: "Compare prices across Zepto, Blinkit, Instamart, Amazon Fresh, Flipkart Minutes and BB Now before you order." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "QuickCompare India — Compare quick-commerce prices" },
+      { name: "twitter:description", content: "Compare prices across Zepto, Blinkit, Instamart, Amazon Fresh, Flipkart Minutes and BB Now before you order." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/54b1a92d-abe1-4061-aded-303d198f386e" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/54b1a92d-abe1-4061-aded-303d198f386e" },
     ],
     links: [
       {
