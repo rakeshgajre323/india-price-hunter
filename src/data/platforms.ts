@@ -20,9 +20,26 @@ export const platforms: Platform[] = [
 
 export const getPlatform = (id: string) => platforms.find((p) => p.id === id);
 
+// Real per-platform search URL patterns. Each app has its own search route
+// shape — we send the user straight into that app's listing for the query so
+// they see the platform's own product photography and live price.
+// Phase 2: wrap the final URL with Cuelinks / EarnKaro for affiliate tracking.
 export function buildDeepLink(platformId: string, productSlug: string, _pincode: string) {
-  const p = getPlatform(platformId);
-  if (!p) return "#";
-  // Phase 2: wrap with Cuelinks/EarnKaro affiliate URL
-  return `${p.website}/search?q=${encodeURIComponent(productSlug)}`;
+  const q = encodeURIComponent(productSlug.replace(/-/g, " "));
+  switch (platformId) {
+    case "zepto":
+      return `https://www.zeptonow.com/search?query=${q}`;
+    case "blinkit":
+      return `https://blinkit.com/s/?q=${q}`;
+    case "instamart":
+      return `https://www.swiggy.com/instamart/search?custom_back=true&query=${q}`;
+    case "amazon-fresh":
+      return `https://www.amazon.in/s?k=${q}&i=nowstore`;
+    case "flipkart-minutes":
+      return `https://www.flipkart.com/search?q=${q}&marketplace=GROCERY`;
+    case "bb-now":
+      return `https://www.bigbasket.com/ps/?q=${q}&nc=as`;
+    default:
+      return "#";
+  }
 }
