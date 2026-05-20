@@ -5,6 +5,7 @@ import { categories } from "@/data/categories";
 import { platforms } from "@/data/platforms";
 import { products } from "@/data/products";
 import { ProductCard } from "@/components/ProductCard";
+import { LogoMarquee } from "@/components/LogoMarquee";
 import { savingsPercent } from "@/lib/compare";
 
 export const Route = createFileRoute("/")({
@@ -115,23 +116,10 @@ function Index() {
           </div>
         </div>
 
-        {/* As featured in / platforms strip */}
-        <div className="relative border-t border-border/60 bg-background/60 backdrop-blur">
-          <div className="mx-auto max-w-7xl px-4 py-6">
-            <div className="text-center text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Comparing prices across India's top quick-commerce apps
-            </div>
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-              {platforms.map((p) => (
-                <div key={p.id} className="flex items-center gap-2 opacity-80 transition hover:opacity-100">
-                  <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: p.color }} />
-                  <span className="text-sm font-semibold tracking-tight">{p.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
       </section>
+
+      {/* Scrolling logo marquee */}
+      <LogoMarquee />
 
       {/* Categories */}
       <section className="mx-auto max-w-7xl px-4 py-14">
