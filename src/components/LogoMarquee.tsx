@@ -1,4 +1,38 @@
-import { platforms } from "@/data/platforms";
+import { useState } from "react";
+import { platforms, type Platform } from "@/data/platforms";
+
+function LogoTile({ p }: { p: Platform }) {
+  const [failed, setFailed] = useState(false);
+  return (
+    <div className="flex min-w-[200px] items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3 shadow-sm">
+      {failed ? (
+        <span
+          className="flex h-10 w-10 items-center justify-center rounded-xl text-base font-black text-white"
+          style={{ background: `linear-gradient(135deg, ${p.color}, ${p.color}cc)` }}
+          aria-hidden
+        >
+          {p.shortName.charAt(0)}
+        </span>
+      ) : (
+        <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-white ring-1 ring-border">
+          <img
+            src={p.logo}
+            alt={`${p.name} logo`}
+            loading="lazy"
+            className="h-8 w-8 object-contain"
+            onError={() => setFailed(true)}
+          />
+        </span>
+      )}
+      <div className="flex flex-col">
+        <span className="text-sm font-bold leading-tight tracking-tight">{p.name}</span>
+        <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+          ~{p.avgEtaMin} min delivery
+        </span>
+      </div>
+    </div>
+  );
+}
 
 /**
  * Infinite horizontal marquee of partner app logos.
@@ -27,28 +61,7 @@ export function LogoMarquee() {
         >
           <div className="flex w-max animate-marquee gap-6 group-hover:[animation-play-state:paused]">
             {loop.map((p, i) => (
-              <div
-                key={`${p.id}-${i}`}
-                className="flex min-w-[200px] items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3 shadow-sm"
-              >
-                <span
-                  className="flex h-10 w-10 items-center justify-center rounded-xl text-base font-black text-white"
-                  style={{
-                    background: `linear-gradient(135deg, ${p.color}, ${p.color}cc)`,
-                  }}
-                  aria-hidden
-                >
-                  {p.shortName.charAt(0)}
-                </span>
-                <div className="flex flex-col">
-                  <span className="text-sm font-bold leading-tight tracking-tight">
-                    {p.name}
-                  </span>
-                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                    ~{p.avgEtaMin} min delivery
-                  </span>
-                </div>
-              </div>
+              <LogoTile key={`${p.id}-${i}`} p={p} />
             ))}
           </div>
         </div>
