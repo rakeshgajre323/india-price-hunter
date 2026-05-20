@@ -9,8 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as MethodologyRouteImport } from './routes/methodology'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as DealsRouteImport } from './routes/deals'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as AlertsRouteImport } from './routes/alerts'
@@ -19,6 +21,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
@@ -27,6 +34,11 @@ const SearchRoute = SearchRouteImport.update({
 const MethodologyRoute = MethodologyRouteImport.update({
   id: '/methodology',
   path: '/methodology',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DealsRoute = DealsRouteImport.update({
@@ -71,8 +83,10 @@ export interface FileRoutesByFullPath {
   '/alerts': typeof AlertsRoute
   '/compare': typeof CompareRoute
   '/deals': typeof DealsRoute
+  '/login': typeof LoginRoute
   '/methodology': typeof MethodologyRoute
   '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$id': typeof ProductIdRoute
 }
@@ -82,8 +96,10 @@ export interface FileRoutesByTo {
   '/alerts': typeof AlertsRoute
   '/compare': typeof CompareRoute
   '/deals': typeof DealsRoute
+  '/login': typeof LoginRoute
   '/methodology': typeof MethodologyRoute
   '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$id': typeof ProductIdRoute
 }
@@ -94,8 +110,10 @@ export interface FileRoutesById {
   '/alerts': typeof AlertsRoute
   '/compare': typeof CompareRoute
   '/deals': typeof DealsRoute
+  '/login': typeof LoginRoute
   '/methodology': typeof MethodologyRoute
   '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$id': typeof ProductIdRoute
 }
@@ -107,8 +125,10 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/compare'
     | '/deals'
+    | '/login'
     | '/methodology'
     | '/search'
+    | '/signup'
     | '/category/$slug'
     | '/product/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -118,8 +138,10 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/compare'
     | '/deals'
+    | '/login'
     | '/methodology'
     | '/search'
+    | '/signup'
     | '/category/$slug'
     | '/product/$id'
   id:
@@ -129,8 +151,10 @@ export interface FileRouteTypes {
     | '/alerts'
     | '/compare'
     | '/deals'
+    | '/login'
     | '/methodology'
     | '/search'
+    | '/signup'
     | '/category/$slug'
     | '/product/$id'
   fileRoutesById: FileRoutesById
@@ -141,14 +165,23 @@ export interface RootRouteChildren {
   AlertsRoute: typeof AlertsRoute
   CompareRoute: typeof CompareRoute
   DealsRoute: typeof DealsRoute
+  LoginRoute: typeof LoginRoute
   MethodologyRoute: typeof MethodologyRoute
   SearchRoute: typeof SearchRoute
+  SignupRoute: typeof SignupRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ProductIdRoute: typeof ProductIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/search': {
       id: '/search'
       path: '/search'
@@ -161,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/methodology'
       fullPath: '/methodology'
       preLoaderRoute: typeof MethodologyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/deals': {
@@ -221,8 +261,10 @@ const rootRouteChildren: RootRouteChildren = {
   AlertsRoute: AlertsRoute,
   CompareRoute: CompareRoute,
   DealsRoute: DealsRoute,
+  LoginRoute: LoginRoute,
   MethodologyRoute: MethodologyRoute,
   SearchRoute: SearchRoute,
+  SignupRoute: SignupRoute,
   CategorySlugRoute: CategorySlugRoute,
   ProductIdRoute: ProductIdRoute,
 }
