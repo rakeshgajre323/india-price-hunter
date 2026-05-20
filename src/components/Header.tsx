@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Search, Bell, ShoppingBasket, Zap } from "lucide-react";
+import { Search, Bell, ShoppingBasket, Zap, User } from "lucide-react";
 import { PincodeBar } from "./PincodeBar";
 
 export function Header() {
@@ -33,6 +33,18 @@ export function Header() {
           </Link>
           <Link to="/compare" className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground" aria-label="Basket">
             <ShoppingBasket className="h-4 w-4" />
+          </Link>
+          <Link
+            to="/login"
+            className="ml-1 hidden items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 text-xs font-semibold hover:border-primary hover:text-primary sm:inline-flex"
+          >
+            <User className="h-3.5 w-3.5" /> Log in
+          </Link>
+          <Link
+            to="/signup"
+            className="ml-1 inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:opacity-90"
+          >
+            Sign up
           </Link>
         </div>
       </div>
