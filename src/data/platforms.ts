@@ -1,3 +1,5 @@
+import zeptoLogo from "@/assets/zepto-logo.jpg";
+
 export type Platform = {
   id: string;
   name: string;
@@ -15,7 +17,7 @@ export type Platform = {
 const logoFor = (domain: string) => `/api/logo/${domain}`;
 
 export const platforms: Platform[] = [
-  { id: "zepto", name: "Zepto", shortName: "Zepto", color: "#7e3af2", deliveryFee: 25, freeDeliveryAbove: 199, avgEtaMin: 10, website: "https://www.zeptonow.com", logo: logoFor("zeptonow.com") },
+  { id: "zepto", name: "Zepto", shortName: "Zepto", color: "#7e3af2", deliveryFee: 25, freeDeliveryAbove: 199, avgEtaMin: 10, website: "https://www.zeptonow.com", logo: zeptoLogo },
   { id: "blinkit", name: "Blinkit", shortName: "Blinkit", color: "#f8cb46", deliveryFee: 20, freeDeliveryAbove: 199, avgEtaMin: 11, website: "https://blinkit.com", logo: logoFor("blinkit.com") },
   { id: "instamart", name: "Swiggy Instamart", shortName: "Instamart", color: "#fc8019", deliveryFee: 29, freeDeliveryAbove: 249, avgEtaMin: 15, website: "https://www.swiggy.com/instamart", logo: logoFor("swiggy.com") },
   { id: "amazon-fresh", name: "Amazon Fresh", shortName: "Amazon Fresh", color: "#ff9900", deliveryFee: 30, freeDeliveryAbove: 299, avgEtaMin: 120, website: "https://www.amazon.in/fresh", logo: "https://images.seeklogo.com/logo-png/38/1/amazon-fresh-logo-png_seeklogo-386992.png" },
