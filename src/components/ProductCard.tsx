@@ -14,16 +14,17 @@ export function ProductCard({ product }: { product: Product }) {
       params={{ id: product.id }}
       className="group flex flex-col rounded-2xl border border-border bg-card p-4 transition hover:border-primary/40 hover:shadow-md"
     >
-      <div className="flex h-32 items-center justify-center overflow-hidden rounded-xl bg-secondary/60">
+      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-secondary/60">
         {imgFailed ? (
-          <span className="text-5xl">{product.image}</span>
+          <span className="absolute inset-0 flex items-center justify-center text-5xl">{product.image}</span>
         ) : (
           <img
-            src={product.imageUrl}
+            src={product.imageRef.url}
             alt={product.name}
             loading="lazy"
+            decoding="async"
             onError={() => setImgFailed(true)}
-            className="h-full w-full object-cover transition group-hover:scale-105"
+            className="h-full w-full object-contain p-3 transition group-hover:scale-105"
           />
         )}
       </div>
