@@ -1,12 +1,15 @@
 import { Clock, ExternalLink } from "lucide-react";
 import { useRouterState } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import type { Product } from "@/data/products";
 import { cheapestPrice, discountPercent, unitPriceLabel } from "@/lib/compare";
 import { PlatformChip } from "./PlatformChip";
 import { buildRedirectHref } from "@/lib/affiliate";
+import { attributeClick } from "@/lib/click-events.functions";
 
 export function PriceTable({ product }: { product: Product }) {
   const sourcePath = useRouterState({ select: (s) => s.location.pathname });
+  const attribute = useServerFn(attributeClick);
   const low = cheapestPrice(product);
   const sorted = [...product.prices].sort((a, b) => Number(b.inStock) - Number(a.inStock) || a.price - b.price);
 
@@ -61,21 +64,66 @@ export function PriceTable({ product }: { product: Product }) {
               <span className="text-[10px] text-muted-foreground">{entry.lastUpdatedMin}m ago</span>
             </div>
             <div className="col-span-2 text-right">
-              <a
-                href={buildRedirectHref(entry.platformId, product.id, {
-                  slug: product.name,
-                  sourcePath,
-                })}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium hover:border-primary hover:text-primary"
-              >
-                Open <ExternalLink className="h-3 w-3" />
-              </a>
+              <OpenButton
+                platformId={entry.platformId}
+                productId={product.id}
+                slug={product.name}
+                sourcePath={sourcePath}
+                onAttribute={(cid) =>
+                  attribute({
+                    data: {
+                      correlationId: cid,
+                      eventType: "affiliate_click",
+                      platformId: entry.platformId,
+                      productId: product.id,
+                      sourcePath,
+                    },
+                  }).catch(() => {})
+                }
+              />
             </div>
           </div>
         );
       })}
     </div>
+  );
+}
+
+function OpenButton({
+  platformId,
+  productId,
+  slug,
+  sourcePath,
+  onAttribute,
+}: {
+  platformId: string;
+  productId: string;
+  slug: string;
+  sourcePath: string;
+  onAttribute: (correlationId: string) => void;
+}) {
+  // Generate a correlation id per click so the (anonymous) redirect row
+  // and the (authenticated) attribution call can be joined server-side.
+  const handleClick = () => {
+    const cid =
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    onAttribute(cid);
+    const href = buildRedirectHref(platformId, productId, {
+      slug,
+      sourcePath,
+      correlationId: cid,
+    });
+    window.open(href, "_blank", "noopener,noreferrer");
+  };
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium hover:border-primary hover:text-primary"
+    >
+      Open <ExternalLink className="h-3 w-3" />
+    </button>
   );
 }

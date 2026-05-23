@@ -16,9 +16,14 @@ export type Database = {
     Tables: {
       affiliate_clicks: {
         Row: {
+          anonymous_session_id: string | null
+          correlation_id: string | null
           created_at: string
-          destination_url: string
+          destination_url: string | null
+          device_type: string | null
+          event_type: string
           id: string
+          ip_hash: string | null
           platform_id: string
           product_id: string | null
           referrer: string | null
@@ -28,9 +33,14 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          anonymous_session_id?: string | null
+          correlation_id?: string | null
           created_at?: string
-          destination_url: string
+          destination_url?: string | null
+          device_type?: string | null
+          event_type?: string
           id?: string
+          ip_hash?: string | null
           platform_id: string
           product_id?: string | null
           referrer?: string | null
@@ -40,9 +50,14 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          anonymous_session_id?: string | null
+          correlation_id?: string | null
           created_at?: string
-          destination_url?: string
+          destination_url?: string | null
+          device_type?: string | null
+          event_type?: string
           id?: string
+          ip_hash?: string | null
           platform_id?: string
           product_id?: string | null
           referrer?: string | null
