@@ -68,6 +68,42 @@ export type Database = {
         }
         Relationships: []
       }
+      price_snapshots: {
+        Row: {
+          captured_at: string
+          correlation_id: string | null
+          currency: string
+          id: string
+          mrp: number | null
+          platform_id: string
+          price: number
+          product_id: string
+          source: string
+        }
+        Insert: {
+          captured_at?: string
+          correlation_id?: string | null
+          currency?: string
+          id?: string
+          mrp?: number | null
+          platform_id: string
+          price: number
+          product_id: string
+          source?: string
+        }
+        Update: {
+          captured_at?: string
+          correlation_id?: string | null
+          currency?: string
+          id?: string
+          mrp?: number | null
+          platform_id?: string
+          price?: number
+          product_id?: string
+          source?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
