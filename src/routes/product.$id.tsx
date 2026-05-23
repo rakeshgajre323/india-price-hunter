@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { Bell, Plus, Minus, Check } from "lucide-react";
-import { getProduct, products } from "@/data/products";
+import { getProduct, products, type Product } from "@/data/products";
 import { getCategory } from "@/data/categories";
 import { cheapestPrice, savingsPercent } from "@/lib/compare";
 import { PriceTable } from "@/components/PriceTable";
@@ -165,7 +165,7 @@ function ProductPage() {
   );
 }
 
-function ProductHero({ product }: { product: ReturnType<typeof getProduct> & {} }) {
+function ProductHero({ product }: { product: Product }) {
   const [failed, setFailed] = useState(false);
   return (
     <div className="flex h-72 items-center justify-center overflow-hidden rounded-3xl border border-border bg-card">
