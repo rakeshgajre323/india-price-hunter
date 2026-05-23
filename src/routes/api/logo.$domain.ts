@@ -13,6 +13,21 @@ import { createFileRoute } from "@tanstack/react-router";
 const ONE_YEAR = 60 * 60 * 24 * 365;
 const SAFE_DOMAIN = /^[a-z0-9.-]+\.[a-z]{2,}$/i;
 
+function fallbackLogo(domain: string) {
+  const label = domain.charAt(0).toUpperCase();
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="${label} logo"><rect width="128" height="128" rx="28" fill="#f8fafc"/><circle cx="64" cy="64" r="42" fill="#4f46e5"/><text x="64" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" font-weight="700" fill="#ffffff">${label}</text></svg>`;
+
+  return new Response(svg, {
+    status: 200,
+    headers: {
+      "Content-Type": "image/svg+xml; charset=utf-8",
+      "Cache-Control": `public, max-age=${ONE_YEAR}, s-maxage=${ONE_YEAR}, immutable`,
+      "CDN-Cache-Control": `public, max-age=${ONE_YEAR}`,
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+}
+
 export const Route = createFileRoute("/api/logo/$domain")({
   server: {
     handlers: {
@@ -34,12 +49,7 @@ export const Route = createFileRoute("/api/logo/$domain")({
           });
 
           if (!res.ok) {
-            // Negative cache: still send a Cache-Control header so we don't
-            // hammer Clearbit on a known-bad domain.
-            return new Response("Logo unavailable", {
-              status: res.status === 404 ? 404 : 502,
-              headers: { "Cache-Control": "public, max-age=3600" },
-            });
+            return fallbackLogo(domain);
           }
 
           const body = await res.arrayBuffer();
@@ -55,11 +65,7 @@ export const Route = createFileRoute("/api/logo/$domain")({
             },
           });
         } catch (err) {
-          console.error("[logo-proxy] fetch failed", domain, err);
-          return new Response("Upstream error", {
-            status: 502,
-            headers: { "Cache-Control": "public, max-age=60" },
-          });
+          return fallbackLogo(domain);
         }
       },
     },
