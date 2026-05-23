@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Trash2, Plus, Minus, Trophy } from "lucide-react";
+import { Trash2, Plus, Minus, Trophy, Split } from "lucide-react";
 import { useBasket } from "@/lib/local-storage-hooks";
 import { getProduct } from "@/data/products";
-import { basketTotals } from "@/lib/compare";
+import { basketTotals, bestSingleBasket, bestSplitBasket } from "@/lib/compare";
 import { getPlatform } from "@/data/platforms";
 import { Button } from "@/components/ui/button";
 import { PlatformChip } from "@/components/PlatformChip";
@@ -24,6 +24,11 @@ function ComparePage() {
   const totals = basketTotals(basket, getProduct);
   const eligible = totals.filter((t) => t.subtotal > 0).sort((a, b) => a.total - b.total);
   const winner = eligible[0];
+  const single = bestSingleBasket(basket, getProduct);
+  const split = bestSplitBasket(basket, getProduct);
+  const splitSavings =
+    single && split ? Math.max(0, single.total - split.total) : 0;
+  const splitIsBetter = splitSavings > 0;
 
   const changeQty = (id: string, delta: number) => {
     setBasket(basket.flatMap((b) => {
@@ -47,6 +52,47 @@ function ComparePage() {
       ) : (
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_360px]">
           <div className="space-y-3">
+            {single && split && (
+              <div className="rounded-2xl border border-border bg-card p-4">
+                <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                  <Split className="h-4 w-4" /> Basket optimization
+                </h2>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  <div className={`rounded-xl border p-3 ${!splitIsBetter ? "border-primary bg-primary/5" : "border-border"}`}>
+                    <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Single platform</div>
+                    <div className="mt-1 flex items-center gap-2">
+                      <PlatformChip platformId={single.platformId} />
+                      <span className="text-lg font-bold tabular-nums">₹{single.total}</span>
+                    </div>
+                    <div className="mt-1 text-[11px] text-muted-foreground tabular-nums">
+                      ₹{single.subtotal} + ₹{single.deliveryFee} delivery · {single.available} item{single.available !== 1 && "s"}
+                    </div>
+                  </div>
+                  <div className={`rounded-xl border p-3 ${splitIsBetter ? "border-primary bg-primary/5" : "border-border"}`}>
+                    <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Split across {split.legs.length} platform{split.legs.length !== 1 && "s"}</div>
+                    <div className="mt-1 flex items-baseline gap-2">
+                      <span className="text-lg font-bold tabular-nums">₹{split.total}</span>
+                      {splitIsBetter && (
+                        <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold text-primary-foreground">
+                          Save ₹{splitSavings}
+                        </span>
+                      )}
+                    </div>
+                    <div className="mt-1 text-[11px] text-muted-foreground tabular-nums">
+                      ₹{split.subtotal} + ₹{split.deliveryFee} delivery
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {split.legs.map((leg) => (
+                        <span key={leg.platformId} className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-2 py-0.5 text-[10px]">
+                          <PlatformChip platformId={leg.platformId} />
+                          <span className="tabular-nums">₹{leg.subtotal + leg.deliveryFee}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             {basket.map((b) => {
               const p = getProduct(b.productId);
               if (!p) return null;
