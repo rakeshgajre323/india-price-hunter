@@ -152,6 +152,37 @@ function Index() {
 
       {/* Promo banner */}
       <section className="mx-auto max-w-7xl px-4 pt-10">
+        {/* Everyday essentials banner */}
+        <div className="relative mb-6 overflow-hidden rounded-3xl shadow-xl ring-1 ring-black/5">
+          <img
+            src={shoppingBanner}
+            alt="Shop everyday essentials — laptops, groceries, vegetables and more"
+            width={1920}
+            height={800}
+            loading="lazy"
+            className="h-56 w-full object-cover md:h-80"
+          />
+          <div className="absolute inset-0 flex items-center bg-gradient-to-r from-purple-900/70 via-purple-900/20 to-transparent md:bg-gradient-to-l md:from-purple-900/0 md:via-purple-900/0 md:to-transparent">
+            <div className="ml-auto max-w-md px-6 py-6 text-right md:px-12">
+              <div className="text-xs font-bold uppercase tracking-widest text-white/90">
+                Everyday essentials
+              </div>
+              <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white drop-shadow-md md:text-4xl">
+                Track Deals on Everything You Buy
+              </h2>
+              <p className="mt-2 text-sm text-white/90 md:text-base">
+                Laptops, vegetables, groceries, footwear &amp; more — all in one place.
+              </p>
+              <Link
+                to="/deals"
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-purple-700 shadow-md transition hover:bg-amber-300 hover:text-amber-950"
+              >
+                Explore Deals <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500 px-6 py-6 md:px-10 md:py-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
