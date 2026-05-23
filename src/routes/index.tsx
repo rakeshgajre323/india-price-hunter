@@ -95,8 +95,8 @@ function Index() {
             <input
               name="q"
               type="search"
-              placeholder="Paste a Zepto / Blinkit link or search a product"
-              className="ml-3 h-11 w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+              placeholder="Paste any quick-commerce link to compare instantly"
+              className="ml-3 h-11 w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none font-mono border-2 border-double border-slate-50 shadow-sm rounded-md opacity-100"
             />
             <button
               type="button"
