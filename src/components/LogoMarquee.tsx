@@ -19,6 +19,12 @@ function LogoTile({ p }: { p: Platform }) {
             src={p.logo}
             alt={`${p.name} logo`}
             loading="lazy"
+            decoding="async"
+            width={32}
+            height={32}
+            // Hint to the browser cache: same URL across pages → reuse the
+            // already-decoded bitmap instead of re-fetching.
+            fetchPriority="low"
             className="h-8 w-8 object-contain"
             onError={() => setFailed(true)}
           />

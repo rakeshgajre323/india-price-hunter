@@ -20,6 +20,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
+import { Route as ApiLogoDomainRouteImport } from './routes/api/logo.$domain'
 import { Route as ApiRPlatformProductIdRouteImport } from './routes/api/r/$platform.$productId'
 
 const SignupRoute = SignupRouteImport.update({
@@ -77,6 +78,11 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
   path: '/category/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiLogoDomainRoute = ApiLogoDomainRouteImport.update({
+  id: '/api/logo/$domain',
+  path: '/api/logo/$domain',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiRPlatformProductIdRoute = ApiRPlatformProductIdRouteImport.update({
   id: '/api/r/$platform/$productId',
   path: '/api/r/$platform/$productId',
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$id': typeof ProductIdRoute
+  '/api/logo/$domain': typeof ApiLogoDomainRoute
   '/api/r/$platform/$productId': typeof ApiRPlatformProductIdRoute
 }
 export interface FileRoutesByTo {
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$id': typeof ProductIdRoute
+  '/api/logo/$domain': typeof ApiLogoDomainRoute
   '/api/r/$platform/$productId': typeof ApiRPlatformProductIdRoute
 }
 export interface FileRoutesById {
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$id': typeof ProductIdRoute
+  '/api/logo/$domain': typeof ApiLogoDomainRoute
   '/api/r/$platform/$productId': typeof ApiRPlatformProductIdRoute
 }
 export interface FileRouteTypes {
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/category/$slug'
     | '/product/$id'
+    | '/api/logo/$domain'
     | '/api/r/$platform/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/category/$slug'
     | '/product/$id'
+    | '/api/logo/$domain'
     | '/api/r/$platform/$productId'
   id:
     | '__root__'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/category/$slug'
     | '/product/$id'
+    | '/api/logo/$domain'
     | '/api/r/$platform/$productId'
   fileRoutesById: FileRoutesById
 }
@@ -183,6 +195,7 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ProductIdRoute: typeof ProductIdRoute
+  ApiLogoDomainRoute: typeof ApiLogoDomainRoute
   ApiRPlatformProductIdRoute: typeof ApiRPlatformProductIdRoute
 }
 
@@ -265,6 +278,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategorySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/logo/$domain': {
+      id: '/api/logo/$domain'
+      path: '/api/logo/$domain'
+      fullPath: '/api/logo/$domain'
+      preLoaderRoute: typeof ApiLogoDomainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/r/$platform/$productId': {
       id: '/api/r/$platform/$productId'
       path: '/api/r/$platform/$productId'
@@ -287,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   CategorySlugRoute: CategorySlugRoute,
   ProductIdRoute: ProductIdRoute,
+  ApiLogoDomainRoute: ApiLogoDomainRoute,
   ApiRPlatformProductIdRoute: ApiRPlatformProductIdRoute,
 }
 export const routeTree = rootRouteImport
