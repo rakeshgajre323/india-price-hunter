@@ -69,6 +69,8 @@ export function PriceTable({ product }: { product: Product }) {
                 productId={product.id}
                 slug={product.name}
                 sourcePath={sourcePath}
+                price={entry.price}
+                mrp={entry.mrp}
                 onAttribute={(cid) =>
                   attribute({
                     data: {
@@ -94,12 +96,16 @@ function OpenButton({
   productId,
   slug,
   sourcePath,
+  price,
+  mrp,
   onAttribute,
 }: {
   platformId: string;
   productId: string;
   slug: string;
   sourcePath: string;
+  price: number;
+  mrp: number;
   onAttribute: (correlationId: string) => void;
 }) {
   // Generate a correlation id per click so the (anonymous) redirect row
@@ -114,6 +120,8 @@ function OpenButton({
       slug,
       sourcePath,
       correlationId: cid,
+      price,
+      mrp,
     });
     window.open(href, "_blank", "noopener,noreferrer");
   };
