@@ -67,32 +67,32 @@
 
 :root {
   --radius: 0.875rem;
-  /* Deep Indigo premium palette (CRED / Linear / Raycast inspired) */
-  --background: oklch(0.22 0.09 280);          /* #1E1B4B */
+  /* Slate + Teal premium palette */
+  --background: oklch(0.21 0.04 265);          /* #0F172A */
   --foreground: oklch(0.985 0.003 250);        /* #F8FAFC */
-  --card: oklch(1 0 0 / 6%);                   /* glass indigo surface */
+  --card: oklch(0.25 0.035 265);               /* #111827 */
   --card-foreground: oklch(0.985 0.003 250);
-  --popover: oklch(0.32 0.14 280);             /* #312E81 */
+  --popover: oklch(0.25 0.035 265);
   --popover-foreground: oklch(0.985 0.003 250);
-  --primary: oklch(0.58 0.22 280);             /* #6D5EF5 */
-  --primary-foreground: oklch(0.985 0.003 250);
-  --secondary: oklch(0.32 0.14 280);           /* #312E81 */
+  --primary: oklch(0.72 0.13 185);             /* #14B8A6 teal */
+  --primary-foreground: oklch(0.21 0.04 265);
+  --secondary: oklch(0.28 0.035 265);
   --secondary-foreground: oklch(0.985 0.003 250);
-  --muted: oklch(0.32 0.10 280);
-  --muted-foreground: oklch(0.85 0.05 275);    /* #C7D2FE */
-  --accent: oklch(0.85 0.13 180);              /* #5EEAD4 mint success accent */
-  --accent-foreground: oklch(0.22 0.09 280);
+  --muted: oklch(0.28 0.03 265);
+  --muted-foreground: oklch(0.68 0.03 255);    /* #94A3B8 */
+  --accent: oklch(0.78 0.16 160);              /* #22C55E highlight */
+  --accent-foreground: oklch(0.21 0.04 265);
   --destructive: oklch(0.65 0.22 25);
   --destructive-foreground: oklch(0.985 0.003 250);
   --border: oklch(1 0 0 / 8%);
   --input: oklch(1 0 0 / 10%);
-  --ring: oklch(0.58 0.22 280);
-  --primary-deep: oklch(0.32 0.14 280);        /* #312E81 */
-  --primary-glow: oklch(0.66 0.18 275);        /* #7C83FD */
-  --success: oklch(0.85 0.13 180);             /* #5EEAD4 */
-  --success-foreground: oklch(0.22 0.09 280);
-  --gradient-hero: linear-gradient(135deg, oklch(0.58 0.22 280) 0%, oklch(0.66 0.18 275) 100%);
-  --shadow-glow: 0 30px 80px -30px color-mix(in oklab, oklch(0.58 0.22 280) 35%, transparent);
+  --ring: oklch(0.72 0.13 185);
+  --primary-deep: oklch(0.55 0.12 185);
+  --primary-glow: oklch(0.80 0.14 180);        /* #2DD4BF */
+  --success: oklch(0.78 0.16 160);             /* #22C55E */
+  --success-foreground: oklch(0.21 0.04 265);
+  --gradient-hero: linear-gradient(135deg, oklch(0.72 0.13 185) 0%, oklch(0.80 0.14 180) 100%);
+  --shadow-glow: 0 30px 80px -30px color-mix(in oklab, oklch(0.72 0.13 185) 35%, transparent);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
