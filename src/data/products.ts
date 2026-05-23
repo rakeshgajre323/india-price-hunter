@@ -19,6 +19,7 @@ export type Product = {
   brand: string;
   categorySlug: string;
   image: string;
+  imageUrl: string;
   description: string;
   prices: PriceEntry[];
   history: { date: string; prices: Record<string, number> }[];
@@ -39,6 +40,7 @@ type Seed = {
   brand: string;
   categorySlug: string;
   image: string;
+  imageQuery?: string;
   description: string;
   packSize: string;
   unit: PriceEntry["unit"];
@@ -139,6 +141,9 @@ function makeProduct(seed: Seed, idx: number): Product {
     brand: seed.brand,
     categorySlug: seed.categorySlug,
     image: seed.image,
+    imageUrl: `https://loremflickr.com/600/600/${encodeURIComponent(
+      seed.imageQuery ?? `${seed.brand} ${seed.name} product`
+    )}?lock=${idx + 1}`,
     description: seed.description,
     prices,
     history,

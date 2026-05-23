@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { Bell, Plus, Minus, Check } from "lucide-react";
-import { getProduct, products } from "@/data/products";
+import { getProduct, products, type Product } from "@/data/products";
 import { getCategory } from "@/data/categories";
 import { cheapestPrice, savingsPercent } from "@/lib/compare";
 import { PriceTable } from "@/components/PriceTable";
@@ -84,9 +84,7 @@ function ProductPage() {
       <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_1.5fr]">
         {/* Left: image + actions */}
         <div>
-          <div className="flex h-72 items-center justify-center rounded-3xl border border-border bg-card text-9xl">
-            {product.image}
-          </div>
+          <ProductHero product={product} />
 
           <div className="mt-5 rounded-2xl border border-border bg-card p-4">
             <h3 className="text-sm font-semibold">Add to basket compare</h3>
@@ -162,6 +160,24 @@ function ProductPage() {
             {related.map((p) => <ProductCard key={p.id} product={p} />)}
           </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+function ProductHero({ product }: { product: Product }) {
+  const [failed, setFailed] = useState(false);
+  return (
+    <div className="flex h-72 items-center justify-center overflow-hidden rounded-3xl border border-border bg-card">
+      {failed ? (
+        <span className="text-9xl">{product.image}</span>
+      ) : (
+        <img
+          src={product.imageUrl}
+          alt={product.name}
+          onError={() => setFailed(true)}
+          className="h-full w-full object-cover"
+        />
       )}
     </div>
   );
