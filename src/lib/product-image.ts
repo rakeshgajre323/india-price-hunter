@@ -13,6 +13,10 @@ export type ProductImageSource =
 export type ProductImage = {
   source: ProductImageSource;
   url: string;
+  // ISO timestamp of the last time we confirmed `url` actually resolves.
+  // Scraper/Amazon URLs expire — a future health-check worker will refresh
+  // this and demote stale entries to `placeholder`.
+  lastValidatedAt?: string;
   // optional, future: alt CDN, srcset, dominant color, etc.
 };
 
