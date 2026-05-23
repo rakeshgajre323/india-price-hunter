@@ -31,6 +31,10 @@ export const Route = createFileRoute("/api/r/$platform/$productId")({
         const slug = url.searchParams.get("q") ?? params.productId;
         const sourcePath = url.searchParams.get("src");
         const correlationId = url.searchParams.get("c");
+        const priceRaw = url.searchParams.get("p");
+        const mrpRaw = url.searchParams.get("m");
+        const price = priceRaw !== null ? Number(priceRaw) : null;
+        const mrp = mrpRaw !== null ? Number(mrpRaw) : null;
 
         const deepLink = buildDeepLink(params.platform, slug, "");
         if (!deepLink || deepLink === "#") {
@@ -73,6 +77,25 @@ export const Route = createFileRoute("/api/r/$platform/$productId")({
             .then(({ error }) => {
               if (error) console.error("[affiliate-click] insert failed", error.message);
             });
+
+          // Capture the price the user saw at click time. Joined to the
+          // affiliate_click row via correlation_id for future attribution
+          // analysis (price sensitivity, conversion-by-discount, etc.).
+          if (price !== null && Number.isFinite(price) && price >= 0) {
+            void supabaseAdmin
+              .from("price_snapshots")
+              .insert({
+                product_id: params.productId,
+                platform_id: params.platform,
+                price,
+                mrp: mrp !== null && Number.isFinite(mrp) && mrp >= 0 ? mrp : null,
+                source: "click",
+                correlation_id: correlationId,
+              })
+              .then(({ error }) => {
+                if (error) console.error("[price-snapshot] insert failed", error.message);
+              });
+          }
         }
 
         return new Response(null, {
