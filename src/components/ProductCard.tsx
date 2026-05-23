@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useState } from "react";
 import type { Product } from "@/data/products";
 import { cheapestPrice, savingsPercent, discountPercent } from "@/lib/compare";
 import { PlatformChip } from "./PlatformChip";
@@ -6,14 +7,25 @@ import { PlatformChip } from "./PlatformChip";
 export function ProductCard({ product }: { product: Product }) {
   const low = cheapestPrice(product);
   const savings = savingsPercent(product);
+  const [imgFailed, setImgFailed] = useState(false);
   return (
     <Link
       to="/product/$id"
       params={{ id: product.id }}
       className="group flex flex-col rounded-2xl border border-border bg-card p-4 transition hover:border-primary/40 hover:shadow-md"
     >
-      <div className="flex h-28 items-center justify-center rounded-xl bg-secondary/60 text-5xl">
-        <span>{product.image}</span>
+      <div className="flex h-32 items-center justify-center overflow-hidden rounded-xl bg-secondary/60">
+        {imgFailed ? (
+          <span className="text-5xl">{product.image}</span>
+        ) : (
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            loading="lazy"
+            onError={() => setImgFailed(true)}
+            className="h-full w-full object-cover transition group-hover:scale-105"
+          />
+        )}
       </div>
       <div className="mt-3 flex-1">
         <div className="text-xs uppercase tracking-wide text-muted-foreground">{product.brand}</div>
