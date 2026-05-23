@@ -68,12 +68,12 @@
 :root {
   --radius: 0.875rem;
   /* Light slate + blue palette */
-  --background: oklch(0.985 0.003 250);        /* #F8FAFC */
-  --foreground: oklch(0.18 0.02 265);          /* #111827 */
-  --card: oklch(1 0 0);                        /* #FFFFFF */
-  --card-foreground: oklch(0.18 0.02 265);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.02 265);
+  --background: oklch(0.04 0 0);               /* #0A0A0A */
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.09 0 0);                     /* #111111 */
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.09 0 0);
+  --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.21 0.04 265);             /* #0F172A slate primary */
   --primary-foreground: oklch(0.985 0.003 250);
   --secondary: oklch(0.96 0.005 250);
