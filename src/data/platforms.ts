@@ -20,7 +20,7 @@ export const platforms: Platform[] = [
   { id: "instamart", name: "Swiggy Instamart", shortName: "Instamart", color: "#fc8019", deliveryFee: 29, freeDeliveryAbove: 249, avgEtaMin: 15, website: "https://www.swiggy.com/instamart", logo: logoFor("swiggy.com") },
   { id: "amazon-fresh", name: "Amazon Fresh", shortName: "Amazon Fresh", color: "#ff9900", deliveryFee: 30, freeDeliveryAbove: 299, avgEtaMin: 120, website: "https://www.amazon.in/fresh", logo: logoFor("amazon.in") },
   { id: "flipkart-minutes", name: "Flipkart Minutes", shortName: "FK Minutes", color: "#2874f0", deliveryFee: 25, freeDeliveryAbove: 199, avgEtaMin: 12, website: "https://www.flipkart.com/minutes", logo: logoFor("flipkart.com") },
-  { id: "bb-now", name: "BB Now", shortName: "BB Now", color: "#84c225", deliveryFee: 19, freeDeliveryAbove: 199, avgEtaMin: 15, website: "https://www.bigbasket.com/bb-now", logo: logoFor("bigbasket.com") },
+  { id: "bb-now", name: "BB Now", shortName: "BB Now", color: "#84c225", deliveryFee: 19, freeDeliveryAbove: 199, avgEtaMin: 15, website: "https://www.bigbasket.com/bb-now", logo: "https://play-lh.googleusercontent.com/EuiZnkT8aEKjXDLX74DTp1VRIwWaeRa8Dvo-LOGAxy1FPQ8GzABTIRenksiM-A7Oz48g" },
 ];
 
 export const getPlatform = (id: string) => platforms.find((p) => p.id === id);
