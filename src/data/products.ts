@@ -19,6 +19,7 @@ export type Product = {
   brand: string;
   categorySlug: string;
   image: string;
+  imageUrl: string;
   description: string;
   prices: PriceEntry[];
   history: { date: string; prices: Record<string, number> }[];
@@ -39,6 +40,7 @@ type Seed = {
   brand: string;
   categorySlug: string;
   image: string;
+  imageQuery: string;
   description: string;
   packSize: string;
   unit: PriceEntry["unit"];
