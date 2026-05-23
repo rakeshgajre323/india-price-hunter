@@ -1,6 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Search, Bell, ShoppingBasket, Zap, Star, ShieldCheck, TrendingDown, IndianRupee } from "lucide-react";
+import {
+  ArrowRight,
+  Search,
+  Bell,
+  ShoppingBasket,
+  Sparkles,
+  Mic,
+  Chrome,
+  Smartphone,
+  Users,
+  Wallet,
+  ChevronRight,
+} from "lucide-react";
 import { categories } from "@/data/categories";
 import { platforms } from "@/data/platforms";
 import { products } from "@/data/products";
@@ -20,6 +32,17 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const DEAL_TIERS = [49, 99, 149, 199, 299, 399, 499, 799];
+const DISCOUNT_TIERS = [30, 40, 50, 60, 70];
+const QUICK_LINKS = [
+  "Zepto Price Tracker",
+  "Blinkit Price Tracker",
+  "Instamart Deals",
+  "Cheapest Milk Today",
+  "BigBasket Coupons",
+  "Amazon Fresh",
+];
+
 function Index() {
   const trending = [...products]
     .map((p) => ({ p, s: savingsPercent(p) }))
@@ -29,142 +52,271 @@ function Index() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-primary/10 via-background to-accent/10">
-        <div className="pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full bg-primary/15 blur-3xl" aria-hidden />
-        <div className="pointer-events-none absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-accent/20 blur-3xl" aria-hidden />
-        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-2 md:py-24">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-              <Zap className="h-3.5 w-3.5" fill="currentColor" />
-              India's #1 quick-commerce price tracker
-            </div>
-            <h1 className="mt-5 text-4xl font-bold tracking-tight md:text-6xl">
-              Stop overpaying. <span className="text-primary">Save up to 40%</span> on every grocery order.
-            </h1>
-            <p className="mt-5 max-w-xl text-base text-muted-foreground md:text-lg">
-              QuickCompare instantly checks Zepto, Blinkit, Instamart, Amazon Fresh, Flipkart Minutes and BB Now side by side — so you always order from the cheapest app in your pincode, in under 10 seconds.
-            </p>
+      {/* Hero — bold purple, centered search */}
+      <section className="relative overflow-hidden">
+        <div
+          className="absolute inset-0 -z-10"
+          style={{ background: "var(--gradient-hero)" }}
+          aria-hidden
+        />
+        {/* radial rays */}
+        <div
+          className="pointer-events-none absolute inset-0 -z-10 opacity-30 mix-blend-overlay"
+          aria-hidden
+          style={{
+            background:
+              "repeating-conic-gradient(from 0deg at 50% 50%, rgba(255,255,255,0.18) 0deg 2deg, transparent 2deg 8deg)",
+          }}
+        />
+        <div className="pointer-events-none absolute -top-20 -left-20 h-80 w-80 rounded-full bg-white/10 blur-3xl" aria-hidden />
+        <div className="pointer-events-none absolute -bottom-32 -right-16 h-96 w-96 rounded-full bg-white/10 blur-3xl" aria-hidden />
 
-            <ul className="mt-6 grid gap-2 text-sm text-foreground/80 sm:grid-cols-2">
-              <li className="flex items-center gap-2"><TrendingDown className="h-4 w-4 text-primary" /> Live prices across 6 apps</li>
-              <li className="flex items-center gap-2"><IndianRupee className="h-4 w-4 text-primary" /> Cheapest-basket calculator</li>
-              <li className="flex items-center gap-2"><Bell className="h-4 w-4 text-primary" /> Free price-drop alerts</li>
-              <li className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-primary" /> Pincode-aware, no signup</li>
-            </ul>
-
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link to="/search" className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:opacity-90">
-                <Search className="h-4 w-4" /> Start saving — it's free
-              </Link>
-              <Link to="/compare" className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold hover:border-primary hover:text-primary">
-                <ShoppingBasket className="h-4 w-4" /> Compare a basket
-              </Link>
-            </div>
-
-            {/* Social proof */}
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <div className="flex items-center gap-1.5">
-                <div className="flex">
-                  {[0,1,2,3,4].map((i) => (
-                    <Star key={i} className="h-4 w-4 fill-primary text-primary" />
-                  ))}
-                </div>
-                <span className="text-sm font-semibold">4.8/5</span>
-                <span className="text-xs text-muted-foreground">from 12,000+ shoppers</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <ShieldCheck className="h-4 w-4 text-primary" />
-                Trusted in 80+ Indian cities
-              </div>
-            </div>
+        <div className="relative mx-auto max-w-5xl px-4 pb-16 pt-14 text-center text-white md:pb-24 md:pt-20">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/90 backdrop-blur-sm ring-1 ring-white/20">
+            <Sparkles className="h-3.5 w-3.5" />
+            Price History &amp; Tracker
           </div>
+          <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight md:text-6xl">
+            Find <span className="text-emerald-300">Real Deals</span>
+            <br />
+            <span className="font-bold opacity-95">Skip the Fake Ones</span>
+          </h1>
+          <p className="mx-auto mt-4 max-w-2xl text-base text-white/85 md:text-lg">
+            Track genuine price drops, compare across stores, and shop smarter every day.
+          </p>
 
-          <div className="relative">
-            <div className="rounded-3xl border border-border bg-card p-5 shadow-xl shadow-primary/5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-xs uppercase tracking-wide text-muted-foreground">Trending compare</div>
-                  <div className="font-semibold">Amul Gold Milk · 1 L</div>
-                </div>
-                <span className="rounded-full bg-accent/20 px-2.5 py-1 text-xs font-semibold text-accent-foreground">Save 9%</span>
-              </div>
-              <div className="mt-4 space-y-2">
-                {platforms.slice(0, 5).map((p, i) => {
-                  const price = 65 + i * 2 + (i === 0 ? -2 : 0);
-                  const cheapest = i === 0;
-                  return (
-                    <div key={p.id} className={`flex items-center justify-between rounded-xl border px-3 py-2 text-sm ${cheapest ? "border-primary/40 bg-primary/5" : "border-border"}`}>
-                      <div className="flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: p.color }} />
-                        <span className="font-medium">{p.shortName}</span>
-                        {cheapest && <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-primary-foreground">Cheapest</span>}
-                      </div>
-                      <div className="text-right">
-                        <div className="font-semibold tabular-nums">₹{price}</div>
-                        <div className="text-[10px] text-muted-foreground">{p.avgEtaMin} min</div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="absolute -bottom-4 -left-4 hidden rounded-2xl border border-border bg-card px-4 py-3 shadow-lg sm:block">
-              <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Today's avg savings</div>
-              <div className="text-lg font-bold text-primary">₹186 / order</div>
-            </div>
+          {/* Search bar */}
+          <form
+            role="search"
+            action="/search"
+            className="relative mx-auto mt-8 flex max-w-3xl items-center overflow-hidden rounded-full bg-white pl-5 pr-1.5 py-1.5 shadow-2xl ring-1 ring-black/5"
+          >
+            <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+            <input
+              name="q"
+              type="search"
+              placeholder="Paste a Zepto / Blinkit link or search a product"
+              className="ml-3 h-11 w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+            />
+            <button
+              type="button"
+              aria-label="Voice search"
+              className="mr-1 hidden h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-secondary md:inline-flex"
+            >
+              <Mic className="h-4 w-4" />
+            </button>
+            <button
+              type="submit"
+              className="inline-flex h-11 items-center gap-1.5 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-md transition hover:opacity-90"
+            >
+              <Search className="h-4 w-4" /> Search
+            </button>
+          </form>
+
+          {/* Magic trick callout */}
+          <div className="mx-auto mt-6 inline-flex max-w-full flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-full bg-black/25 px-4 py-2 text-xs text-white/90 ring-1 ring-white/10 backdrop-blur-sm md:text-sm">
+            <Sparkles className="h-3.5 w-3.5 text-amber-300" />
+            <span className="font-semibold">Magic Trick for Quick Commerce</span>
+            <span className="hidden text-white/40 md:inline">•</span>
+            <span className="text-white/80">Type</span>
+            <code className="rounded-full bg-amber-300 px-2 py-0.5 font-mono text-[11px] font-bold text-amber-950">
+              quickcompare.in/
+            </code>
+            <span className="text-white/80">before ANY product link</span>
           </div>
         </div>
 
+        {/* Quick-link chip bar */}
+        <div className="relative border-t border-white/10 bg-white/5 backdrop-blur-sm">
+          <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {QUICK_LINKS.map((label) => (
+              <Link
+                key={label}
+                to="/search"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 bg-white px-3.5 py-1.5 text-xs font-medium text-foreground shadow-sm hover:border-primary hover:text-primary"
+              >
+                <ArrowRight className="h-3 w-3" /> {label}
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* Scrolling logo marquee */}
-      <LogoMarquee />
-
-      {/* Categories */}
-      <section className="mx-auto max-w-7xl px-4 py-14">
-        <div className="flex items-end justify-between">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight md:text-3xl">Shop by category</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Compare prices across every quick-commerce app in seconds.</p>
+      {/* Promo banner */}
+      <section className="mx-auto max-w-7xl px-4 pt-10">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500 px-6 py-6 md:px-10 md:py-8">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-widest text-amber-950/70">
+                Festive month
+              </div>
+              <div className="mt-1 text-2xl font-extrabold text-amber-950 md:text-4xl">
+                FLAT ₹350 OFF on Zepto
+              </div>
+              <div className="mt-1 text-sm font-semibold text-amber-950/80">
+                USE CODE <span className="rounded-md bg-amber-950 px-2 py-0.5 font-mono text-amber-50">QCNEW</span>
+              </div>
+            </div>
+            <Link
+              to="/deals"
+              className="inline-flex items-center gap-2 rounded-full bg-amber-950 px-5 py-3 text-sm font-bold text-amber-50 transition hover:bg-black"
+            >
+              Grab Deal <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
+          <div
+            className="pointer-events-none absolute -bottom-10 -right-10 h-44 w-44 rounded-full bg-white/30 blur-2xl"
+            aria-hidden
+          />
         </div>
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-          {categories.map((c) => {
+      </section>
+
+      {/* Hot Deals — tier grid */}
+      <section className="mx-auto max-w-7xl px-4 pt-14">
+        <SectionHeader title="Hot Deals" subtitle="Powered by Smart Basket Scanner" />
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {DEAL_TIERS.map((t) => (
+            <Link
+              key={t}
+              to="/search"
+              className="group relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/5 via-card to-primary/10 p-5 text-center transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
+            >
+              <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                Deals under
+              </div>
+              <div className="mt-1 text-3xl font-extrabold text-primary tabular-nums md:text-4xl">
+                ₹{t}
+              </div>
+              <div className="pointer-events-none absolute -bottom-6 -right-6 h-20 w-20 rounded-full bg-primary/10 blur-2xl transition group-hover:bg-primary/20" aria-hidden />
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Best Discounts */}
+      <section className="mx-auto max-w-7xl px-4 pt-14">
+        <SectionHeader title="Best Discounts" subtitle="Minimum off across every app" />
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
+          {DISCOUNT_TIERS.map((t) => (
+            <Link
+              key={t}
+              to="/search"
+              className="group relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-rose-50 via-card to-amber-50 p-5 text-center transition hover:-translate-y-0.5 hover:border-rose-300 hover:shadow-lg hover:shadow-rose-200/50"
+            >
+              <div className="text-xs font-semibold uppercase tracking-widest text-rose-700/70">
+                Min.
+              </div>
+              <div className="mt-1 text-3xl font-extrabold text-rose-700 tabular-nums md:text-4xl">
+                {t}%
+              </div>
+              <div className="text-xs font-bold uppercase tracking-widest text-rose-700/70">
+                off
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Shop by Categories — image-tag tiles */}
+      <section className="mx-auto max-w-7xl px-4 pt-14">
+        <SectionHeader title="Shop by Categories" subtitle="Cheapest pick across every quick-commerce app" />
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {categories.map((c, i) => {
             const Icon = c.icon;
+            const priceTags = ["Under ₹49", "Under ₹99", "Under ₹199", "Under ₹299", "Under ₹499", "Under ₹999"];
             return (
-              <Link key={c.slug} to="/category/$slug" params={{ slug: c.slug }} className="group rounded-2xl border border-border bg-card p-4 transition hover:border-primary/40 hover:shadow-md">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                  <Icon className="h-5 w-5" />
+              <Link
+                key={c.slug}
+                to="/category/$slug"
+                params={{ slug: c.slug }}
+                className="group relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/5 to-secondary p-4 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+              >
+                <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                  {priceTags[i % priceTags.length]}
                 </div>
-                <div className="mt-3 text-sm font-semibold group-hover:text-primary">{c.name}</div>
-                <div className="mt-0.5 text-xs text-muted-foreground">{c.description}</div>
+                <div className="mt-1 text-sm font-bold leading-tight text-foreground group-hover:text-primary">
+                  {c.name}
+                </div>
+                <div className="mt-6 flex justify-end">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-card shadow-sm ring-1 ring-border">
+                    <Icon className="h-7 w-7 text-primary" />
+                  </div>
+                </div>
               </Link>
             );
           })}
         </div>
       </section>
 
-      {/* Trending */}
-      <section className="mx-auto max-w-7xl px-4 py-6">
-        <div className="flex items-end justify-between">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight md:text-3xl">Biggest savings today</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Products with the widest price gap between platforms.</p>
-          </div>
-          <Link to="/search" className="text-sm font-medium text-primary hover:underline">View all <ArrowRight className="ml-0.5 inline h-3.5 w-3.5" /></Link>
+      {/* Trending products */}
+      <section className="mx-auto max-w-7xl px-4 pt-14">
+        <div className="flex items-end justify-between gap-4">
+          <SectionHeader title="Biggest savings today" subtitle="Widest price gap between apps right now." />
+          <Link to="/search" className="hidden text-sm font-medium text-primary hover:underline sm:inline-flex">
+            View more <ChevronRight className="ml-0.5 inline h-4 w-4" />
+          </Link>
         </div>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {trending.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
+        <div className="mt-8 flex justify-center">
+          <Link
+            to="/search"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-md transition hover:opacity-90"
+          >
+            View more <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
       </section>
 
-      {/* Platforms */}
-      <section className="mx-auto max-w-7xl px-4 py-14">
-        <h2 className="text-2xl font-bold tracking-tight md:text-3xl">Apps we compare</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Six of India's biggest quick-commerce and grocery delivery apps.</p>
+      {/* Apps marquee */}
+      <section className="mx-auto max-w-7xl px-4 pt-14">
+        <h2 className="text-center text-2xl font-bold tracking-tight md:text-3xl">
+          Apps we compare
+        </h2>
+        <p className="mt-1 text-center text-sm text-muted-foreground">
+          Six of India&apos;s biggest quick-commerce and grocery delivery apps.
+        </p>
+      </section>
+      <LogoMarquee />
+
+      {/* Stats + extension CTA */}
+      <section className="mx-auto max-w-7xl px-4 pt-14">
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-6 md:p-10">
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 opacity-90"
+            aria-hidden
+            style={{
+              background:
+                "radial-gradient(circle at 20% 20%, color-mix(in oklab, var(--primary) 14%, transparent), transparent 60%), radial-gradient(circle at 90% 80%, color-mix(in oklab, var(--primary-glow) 18%, transparent), transparent 55%)",
+            }}
+          />
+          <h2 className="text-center text-2xl font-bold tracking-tight md:text-3xl">
+            Carry QuickCompare wherever you shop
+          </h2>
+          <div className="mt-8 grid gap-4 md:grid-cols-4">
+            <StatCard icon={Users} value="1.2M+" label="Smart Shoppers" />
+            <StatCard icon={Wallet} value="₹42Cr+" label="Saved so far" />
+            <ExtensionCard
+              icon={Chrome}
+              title="Browser Extension"
+              cta="Install — free"
+            />
+            <ExtensionCard icon={Smartphone} title="Mobile App" cta="Get the app" />
+          </div>
+        </div>
+      </section>
+
+      {/* Apps we compare — detail grid */}
+      <section className="mx-auto max-w-7xl px-4 pt-14">
+        <div className="flex items-end justify-between">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight md:text-3xl">Apps we compare</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Live across India&apos;s biggest quick-commerce networks.</p>
+          </div>
+        </div>
         <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
           {platforms.map((p) => (
             <div key={p.id} className="rounded-2xl border border-border bg-card p-4">
@@ -180,7 +332,7 @@ function Index() {
       </section>
 
       {/* How it works */}
-      <section className="border-t border-border bg-secondary/30">
+      <section className="mt-14 border-t border-border bg-secondary/30">
         <div className="mx-auto max-w-7xl px-4 py-14">
           <h2 className="text-2xl font-bold tracking-tight md:text-3xl">How it works</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -203,6 +355,63 @@ function Index() {
           </div>
         </div>
       </section>
+    </div>
+  );
+}
+
+function SectionHeader({ title, subtitle }: { title: string; subtitle: string }) {
+  return (
+    <div className="text-center">
+      <h2 className="text-2xl font-bold tracking-tight md:text-3xl">{title}</h2>
+      <div className="mx-auto mt-2 inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-900">
+        <Sparkles className="h-3 w-3" />
+        {subtitle}
+      </div>
+    </div>
+  );
+}
+
+function StatCard({
+  icon: Icon,
+  value,
+  label,
+}: {
+  icon: typeof Users;
+  value: string;
+  label: string;
+}) {
+  return (
+    <div className="flex flex-col items-center rounded-2xl border border-border bg-card/70 p-5 text-center backdrop-blur-sm">
+      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <Icon className="h-5 w-5" />
+      </div>
+      <div className="mt-3 text-2xl font-extrabold">{value}</div>
+      <div className="mt-0.5 text-xs text-muted-foreground">{label}</div>
+    </div>
+  );
+}
+
+function ExtensionCard({
+  icon: Icon,
+  title,
+  cta,
+}: {
+  icon: typeof Chrome;
+  title: string;
+  cta: string;
+}) {
+  return (
+    <div className="flex flex-col items-center rounded-2xl border border-border bg-card/70 p-5 text-center backdrop-blur-sm">
+      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <Icon className="h-5 w-5" />
+      </div>
+      <div className="mt-3 text-sm font-semibold">{title}</div>
+      <button
+        type="button"
+        className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground shadow-md transition hover:opacity-90"
+      >
+        {cta} <ArrowRight className="h-3 w-3" />
+      </button>
     </div>
   );
 }
