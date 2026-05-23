@@ -168,15 +168,17 @@ function ProductPage() {
 function ProductHero({ product }: { product: Product }) {
   const [failed, setFailed] = useState(false);
   return (
-    <div className="flex h-72 items-center justify-center overflow-hidden rounded-3xl border border-border bg-card">
+    <div className="relative aspect-square w-full overflow-hidden rounded-3xl border border-border bg-card">
       {failed ? (
-        <span className="text-9xl">{product.image}</span>
+        <span className="absolute inset-0 flex items-center justify-center text-9xl">{product.image}</span>
       ) : (
         <img
-          src={product.imageUrl}
+          src={product.imageRef.url}
           alt={product.name}
+          loading="lazy"
+          decoding="async"
           onError={() => setFailed(true)}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-contain p-6"
         />
       )}
     </div>
