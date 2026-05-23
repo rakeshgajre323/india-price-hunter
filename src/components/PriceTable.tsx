@@ -1,12 +1,12 @@
 import { Clock, ExternalLink } from "lucide-react";
+import { useRouterState } from "@tanstack/react-router";
 import type { Product } from "@/data/products";
 import { cheapestPrice, discountPercent, unitPriceLabel } from "@/lib/compare";
 import { PlatformChip } from "./PlatformChip";
-import { buildDeepLink } from "@/data/platforms";
-import { usePincode } from "@/lib/local-storage-hooks";
+import { buildRedirectHref } from "@/lib/affiliate";
 
 export function PriceTable({ product }: { product: Product }) {
-  const [pincode] = usePincode();
+  const sourcePath = useRouterState({ select: (s) => s.location.pathname });
   const low = cheapestPrice(product);
   const sorted = [...product.prices].sort((a, b) => Number(b.inStock) - Number(a.inStock) || a.price - b.price);
 
@@ -62,7 +62,10 @@ export function PriceTable({ product }: { product: Product }) {
             </div>
             <div className="col-span-2 text-right">
               <a
-                href={buildDeepLink(entry.platformId, product.name, pincode)}
+                href={buildRedirectHref(entry.platformId, product.id, {
+                  slug: product.name,
+                  sourcePath,
+                })}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium hover:border-primary hover:text-primary"
