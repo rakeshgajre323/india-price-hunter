@@ -1,6 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { buildDeepLink } from "@/data/platforms";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import {
+  ANON_COOKIE,
+  buildAnonCookie,
+  deviceTypeFromUA,
+  getClientIp,
+  hashIp,
+  isBotUserAgent,
+  parseCookie,
+} from "@/lib/click-tracking.server";
 
 // Wrap an outbound URL with the configured affiliate network (Cuelinks today,
 // EarnKaro tomorrow). Modular so we can swap providers without touching the
@@ -21,6 +30,7 @@ export const Route = createFileRoute("/api/r/$platform/$productId")({
         const url = new URL(request.url);
         const slug = url.searchParams.get("q") ?? params.productId;
         const sourcePath = url.searchParams.get("src");
+        const correlationId = url.searchParams.get("c");
 
         const deepLink = buildDeepLink(params.platform, slug, "");
         if (!deepLink || deepLink === "#") {
@@ -28,18 +38,41 @@ export const Route = createFileRoute("/api/r/$platform/$productId")({
         }
         const destination = wrapAffiliate(deepLink);
 
-        // Fire-and-forget click log. Never block the redirect on logging.
-        try {
-          await supabaseAdmin.from("affiliate_clicks").insert({
-            platform_id: params.platform,
-            product_id: params.productId,
-            destination_url: destination,
-            source_path: sourcePath,
-            referrer: request.headers.get("referer"),
-            user_agent: request.headers.get("user-agent"),
-          });
-        } catch (err) {
-          console.error("[affiliate-click] insert failed", err);
+        const ua = request.headers.get("user-agent");
+        const cookieHeader = request.headers.get("cookie");
+        let anonSid = parseCookie(cookieHeader, ANON_COOKIE);
+        let setCookieHeader: string | null = null;
+        if (!anonSid) {
+          anonSid = crypto.randomUUID();
+          setCookieHeader = buildAnonCookie(anonSid);
+        }
+        const isBot = isBotUserAgent(ua);
+        const deviceType = deviceTypeFromUA(ua);
+        const ipHash = hashIp(getClientIp(request));
+
+        // Fire-and-forget click log. NEVER block or fail the redirect on logging.
+        // Skip writes for obvious bots so analytics stay clean.
+        if (!isBot) {
+          // Best-effort: kick off without awaiting so latency stays minimal.
+          // (Worker runtime may cut off in-flight promises; acceptable for MVP analytics.)
+          void supabaseAdmin
+            .from("affiliate_clicks")
+            .insert({
+              platform_id: params.platform,
+              product_id: params.productId,
+              destination_url: destination,
+              source_path: sourcePath,
+              referrer: request.headers.get("referer"),
+              user_agent: ua,
+              anonymous_session_id: anonSid,
+              device_type: deviceType,
+              ip_hash: ipHash,
+              event_type: "affiliate_click",
+              correlation_id: correlationId,
+            })
+            .then(({ error }) => {
+              if (error) console.error("[affiliate-click] insert failed", error.message);
+            });
         }
 
         return new Response(null, {
@@ -47,6 +80,7 @@ export const Route = createFileRoute("/api/r/$platform/$productId")({
           headers: {
             Location: destination,
             "Cache-Control": "no-store",
+            ...(setCookieHeader ? { "Set-Cookie": setCookieHeader } : {}),
           },
         });
       },
