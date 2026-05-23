@@ -425,33 +425,6 @@ function Index() {
       </section>
       <LogoMarquee />
 
-      {/* Stats + extension CTA */}
-      <section className="mx-auto max-w-7xl px-4 pt-14">
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-6 md:p-10">
-          <div
-            className="pointer-events-none absolute inset-0 -z-10 opacity-90"
-            aria-hidden
-            style={{
-              background:
-                "radial-gradient(circle at 20% 20%, color-mix(in oklab, var(--primary) 14%, transparent), transparent 60%), radial-gradient(circle at 90% 80%, color-mix(in oklab, var(--primary-glow) 18%, transparent), transparent 55%)",
-            }}
-          />
-          <h2 className="text-center text-2xl font-bold tracking-tight md:text-3xl">
-            Carry QuickCompare wherever you shop
-          </h2>
-          <div className="mt-8 grid gap-4 md:grid-cols-4">
-            <StatCard icon={Users} value="1.2M+" label="Smart Shoppers" />
-            <StatCard icon={Wallet} value="₹42Cr+" label="Saved so far" />
-            <ExtensionCard
-              icon={Chrome}
-              title="Browser Extension"
-              cta="Install — free"
-            />
-            <ExtensionCard icon={Smartphone} title="Mobile App" cta="Get the app" />
-          </div>
-        </div>
-      </section>
-
       {/* Apps we compare — detail grid */}
       <section className="mx-auto max-w-7xl px-4 pt-14">
         <div className="flex items-end justify-between">
