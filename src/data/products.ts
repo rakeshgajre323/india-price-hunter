@@ -40,7 +40,7 @@ type Seed = {
   brand: string;
   categorySlug: string;
   image: string;
-  imageQuery: string;
+  imageQuery?: string;
   description: string;
   packSize: string;
   unit: PriceEntry["unit"];
