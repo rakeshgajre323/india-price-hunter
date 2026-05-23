@@ -184,7 +184,7 @@ function Index() {
               <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 Deals under
               </div>
-              <div className="mt-1 text-3xl font-extrabold text-primary tabular-nums md:text-4xl">
+              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500 px-6 py-6 md:px-10 md:py-8 text-purple-600 bg-fuchsia-600">
                 ₹{t}
               </div>
               <div className="pointer-events-none absolute -bottom-6 -right-6 h-20 w-20 rounded-full bg-primary/10 blur-2xl transition group-hover:bg-primary/20" aria-hidden />
