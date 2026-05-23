@@ -26,6 +26,7 @@ import { products } from "@/data/products";
 import { ProductCard } from "@/components/ProductCard";
 import { LogoMarquee } from "@/components/LogoMarquee";
 import { savingsPercent } from "@/lib/compare";
+import shoppingBanner from "@/assets/shopping-banner.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
