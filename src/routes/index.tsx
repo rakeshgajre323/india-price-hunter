@@ -77,9 +77,9 @@ function Index() {
             Price History &amp; Tracker
           </div>
           <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight md:text-6xl">
-            Find <span className="text-emerald-300">Real Deals</span>
+            Stop Switching Apps
             <br />
-            <span className="font-bold opacity-95">Skip the Fake Ones</span>
+            <span className="text-emerald-300">to Compare Prices</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-white/85 md:text-lg">
             Track genuine price drops, compare across stores, and shop smarter every day.
