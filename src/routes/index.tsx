@@ -81,8 +81,8 @@ function Index() {
             <br />
             <span className="text-emerald-300">to Compare Prices</span>
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-white/85 md:text-lg">
-            Track genuine price drops, compare across stores, and shop smarter every day.
+          <p className="mx-auto mt-4 max-w-2xl text-base text-white/85 font-sans md:text-base">
+            Compare prices, delivery fees, and real offers across Blinkit, Zepto, Instamart, and more — instantly.
           </p>
 
           {/* Search bar */}
