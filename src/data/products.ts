@@ -1,4 +1,5 @@
 import { platforms } from "./platforms";
+import { placeholderImage, type ProductImage } from "@/lib/product-image";
 
 export type PriceEntry = {
   platformId: string;
@@ -18,8 +19,8 @@ export type Product = {
   name: string;
   brand: string;
   categorySlug: string;
-  image: string;
-  imageUrl: string;
+  image: string; // emoji fallback (used if <img> errors)
+  imageRef: ProductImage; // abstraction layer — swap source later
   description: string;
   prices: PriceEntry[];
   history: { date: string; prices: Record<string, number> }[];
@@ -40,7 +41,7 @@ type Seed = {
   brand: string;
   categorySlug: string;
   image: string;
-  imageQuery?: string;
+  imageRef?: ProductImage; // override the default placeholder when we have a real URL
   description: string;
   packSize: string;
   unit: PriceEntry["unit"];
@@ -141,9 +142,7 @@ function makeProduct(seed: Seed, idx: number): Product {
     brand: seed.brand,
     categorySlug: seed.categorySlug,
     image: seed.image,
-    imageUrl: `https://loremflickr.com/600/600/${encodeURIComponent(
-      seed.imageQuery ?? `${seed.brand} ${seed.name} product`
-    )}?lock=${idx + 1}`,
+    imageRef: seed.imageRef ?? placeholderImage(`${seed.brand} ${seed.name}`),
     description: seed.description,
     prices,
     history,
