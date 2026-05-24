@@ -6,6 +6,7 @@ import { basketTotals, bestSingleBasket, bestSplitBasket } from "@/lib/compare";
 import { getPlatform } from "@/data/platforms";
 import { Button } from "@/components/ui/button";
 import { PlatformChip } from "@/components/PlatformChip";
+import { LinkCompareBox } from "@/components/LinkCompareBox";
 
 export const Route = createFileRoute("/compare")({
   head: () => ({
@@ -48,6 +49,10 @@ function ComparePage() {
         Basket compare
       </h1>
       <p className="mt-1 text-sm text-muted-foreground">See which app gives you the cheapest total for your entire basket — delivery included.</p>
+
+      <div className="mt-6">
+        <LinkCompareBox />
+      </div>
 
       {basket.length === 0 ? (
         <div className="mt-8 rounded-2xl border border-dashed border-border bg-card p-12 text-center">
