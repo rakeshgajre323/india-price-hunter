@@ -7,7 +7,7 @@ export function Header() {
     <header className="sticky top-3 z-40 px-3 sm:px-4">
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 rounded-full border border-white/40 bg-white/30 px-3 pr-2 shadow-[0_10px_40px_-12px_rgba(15,23,42,0.18)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/25 dark:border-white/10 dark:bg-white/5 sm:px-5">
         <Link to="/" className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground bg-emerald-700 border-2 border-double">
             <ShoppingCart className="h-5 w-5" />
           </span>
           <div className="leading-tight">
