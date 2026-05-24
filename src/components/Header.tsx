@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Search, Bell, ShoppingBasket, Zap, User } from "lucide-react";
 import { PincodeBar } from "./PincodeBar";
-import { ThemeToggle } from "./ThemeToggle";
 
 export function Header() {
   return (
@@ -26,7 +25,6 @@ export function Header() {
 
         <div className="ml-auto flex items-center gap-1">
           <PincodeBar />
-          <ThemeToggle />
             <Link to="/search" className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-white/40 hover:text-foreground md:hidden" aria-label="Search">
             <Search className="h-4 w-4" />
           </Link>
