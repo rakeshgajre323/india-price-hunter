@@ -20,6 +20,7 @@ import {
   Percent,
   Gift,
   ShoppingCart,
+  Link as LinkIcon2,
 } from "lucide-react";
 import { categories } from "@/data/categories";
 import { platforms } from "@/data/platforms";
@@ -112,7 +113,9 @@ function Index() {
             }}
             className="relative mx-auto mt-8 flex max-w-3xl items-center overflow-hidden rounded-full bg-white pl-5 pr-1.5 py-1.5 shadow-2xl ring-1 ring-black/5"
           >
-            <LinkIconSwap hasUrl={looksLikeUrl(query)} />
+            {looksLikeUrl(query)
+              ? <LinkIcon2 className="h-4 w-4 shrink-0 text-primary" />
+              : <Search className="h-4 w-4 shrink-0 text-muted-foreground" />}
             <input
               name="q"
               type="search"
