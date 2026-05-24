@@ -115,24 +115,33 @@ export type EffectivePrice = {
   platformFee: number;
   /** Per-order handling/packaging surcharge. */
   handlingFee: number;
+  /** GST (5% on grocery, applied to item price). */
+  gst: number;
+  /** Dynamic surge fee — varies by time of day / pincode. */
+  surgeFee: number;
+  /** Whether the platform delivers to the entered pincode. */
+  deliverable: boolean;
   /** Sum of all of the above. THIS is the number we rank on. */
   effectiveTotal: number;
   etaMin: number;
   inStock: boolean;
 };
 
-export function effectivePrices(product: Product): EffectivePrice[] {
-  return product.prices.map((entry) => fromEntry(entry));
+export function effectivePrices(product: Product, pincode?: string): EffectivePrice[] {
+  return product.prices.map((entry) => fromEntry(entry, pincode));
 }
 
-function fromEntry(entry: PriceEntry): EffectivePrice {
+function fromEntry(entry: PriceEntry, pincode?: string): EffectivePrice {
   const pl = getPlatform(entry.platformId)!;
+  const deliverable = pincode ? isDeliverable(pincode, entry.platformId) : true;
   const deliveryFee =
     !entry.inStock ? 0 : entry.price >= pl.freeDeliveryAbove ? 0 : pl.deliveryFee;
   const platformFee = entry.inStock ? pl.platformFee : 0;
   const handlingFee = entry.inStock ? pl.handlingFee : 0;
-  const effectiveTotal = entry.inStock
-    ? entry.price + deliveryFee + platformFee + handlingFee
+  const gst = entry.inStock ? Math.round(entry.price * 0.05) : 0;
+  const surgeFee = entry.inStock ? surgeFor(pincode ?? "560001", entry.platformId) : 0;
+  const effectiveTotal = entry.inStock && deliverable
+    ? entry.price + gst + deliveryFee + platformFee + handlingFee + surgeFee
     : Infinity;
   return {
     platformId: entry.platformId,
@@ -141,10 +150,35 @@ function fromEntry(entry: PriceEntry): EffectivePrice {
     deliveryFee,
     platformFee,
     handlingFee,
+    gst,
+    surgeFee,
+    deliverable,
     etaMin: entry.etaMin,
     inStock: entry.inStock,
     effectiveTotal,
   };
+}
+
+/** Deterministic pseudo-deliverability: ~85% of (pincode, platform) pairs serve. */
+export function isDeliverable(pincode: string, platformId: string): boolean {
+  const h = hash(`${pincode}:${platformId}`);
+  return h % 100 < 85;
+}
+
+/** Deterministic surge: 0, 5, 10, or 15 rupees based on pincode + platform. */
+export function surgeFor(pincode: string, platformId: string): number {
+  const h = hash(`surge:${pincode}:${platformId}`);
+  const tiers = [0, 0, 0, 5, 10, 15];
+  return tiers[h % tiers.length];
+}
+
+function hash(s: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return Math.abs(h);
 }
 
 export function bestValue(rows: EffectivePrice[]): EffectivePrice | undefined {
