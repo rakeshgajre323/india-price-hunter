@@ -427,7 +427,7 @@ function Index() {
 
       {/* Apps we compare — detail grid */}
       <section className="mx-auto max-w-7xl px-4 pt-14">
-        <div className="flex items-end justify-between">
+        <div className="mt-4 font-semibold text-zinc-950">
           <div>
             <h2 className="text-2xl font-bold tracking-tight md:text-3xl">Apps we compare</h2>
             <p className="mt-1 text-sm text-muted-foreground">Live across India&apos;s biggest quick-commerce networks.</p>
