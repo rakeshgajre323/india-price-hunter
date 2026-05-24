@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Search, Bell, ShoppingBasket, Zap, User } from "lucide-react";
+import { Search, Bell, ShoppingBasket, ShoppingCart, User } from "lucide-react";
 import { PincodeBar } from "./PincodeBar";
 
 export function Header() {
@@ -8,7 +8,7 @@ export function Header() {
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 rounded-full border border-white/40 bg-white/30 px-3 pr-2 shadow-[0_10px_40px_-12px_rgba(15,23,42,0.18)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/25 dark:border-white/10 dark:bg-white/5 sm:px-5">
         <Link to="/" className="flex items-center gap-2">
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-            <Zap className="h-5 w-5" fill="currentColor" />
+            <ShoppingCart className="h-5 w-5" />
           </span>
           <div className="leading-tight">
             <div className="text-base font-bold tracking-tight">QuickCompare</div>
