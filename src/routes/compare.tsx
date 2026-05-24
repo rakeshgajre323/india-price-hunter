@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Trash2, Plus, Minus, Trophy, Split } from "lucide-react";
+import { Trash2, Plus, Minus, Trophy, Split, ShoppingCart } from "lucide-react";
 import { useBasket } from "@/lib/local-storage-hooks";
 import { getProduct } from "@/data/products";
 import { basketTotals, bestSingleBasket, bestSplitBasket } from "@/lib/compare";
@@ -41,7 +41,12 @@ function ComparePage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
-      <h1 className="text-3xl font-bold tracking-tight">Basket compare</h1>
+      <h1 className="flex items-center gap-3 text-3xl font-bold tracking-tight">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground dark:text-slate-200">
+          <ShoppingCart className="h-5 w-5" />
+        </span>
+        Basket compare
+      </h1>
       <p className="mt-1 text-sm text-muted-foreground">See which app gives you the cheapest total for your entire basket — delivery included.</p>
 
       {basket.length === 0 ? (
