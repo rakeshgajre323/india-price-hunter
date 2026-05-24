@@ -2,8 +2,8 @@ import { Link } from "@tanstack/react-router";
 
 export function Footer() {
   return (
-    <footer className="mt-20 border-t border-border bg-secondary/40">
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 md:grid-cols-4">
+    <footer className="mt-20 border-t border-border">
+      <div className="mx-auto max-w-7xl px-4 pt-14 bg-neutral-900 text-lime-100">
         <div>
           <div className="text-base font-bold">QuickCompare</div>
           <p className="mt-2 max-w-xs text-sm text-muted-foreground">
