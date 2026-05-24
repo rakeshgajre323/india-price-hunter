@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 export function Footer() {
   return (
     <footer className="mt-20 border-t border-border">
-      <div className="mx-auto max-w-7xl px-4 pt-14 bg-neutral-900 text-lime-100">
+      <div className="flex min-h-screen flex-col text-slate-100 bg-black">
         <div>
           <div className="text-base font-bold">QuickCompare</div>
           <p className="mt-2 max-w-xs text-sm text-muted-foreground">
