@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   ArrowRight,
   Search,
@@ -26,6 +27,7 @@ import { products } from "@/data/products";
 import { ProductCard } from "@/components/ProductCard";
 import { LogoMarquee } from "@/components/LogoMarquee";
 import { savingsPercent } from "@/lib/compare";
+import { looksLikeUrl } from "@/lib/parse-product-link";
 import shoppingBanner from "@/assets/shopping-banner.jpg";
 
 export const Route = createFileRoute("/")({
@@ -52,6 +54,8 @@ const QUICK_LINKS = [
 ];
 
 function Index() {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
   const trending = [...products]
     .map((p) => ({ p, s: savingsPercent(p) }))
     .sort((a, b) => b.s - a.s)
