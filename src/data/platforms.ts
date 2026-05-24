@@ -13,6 +13,12 @@ export type Platform = {
   platformFee: number;
   /** Small handling/packaging surcharge (per order). */
   handlingFee: number;
+  /** Eco/packaging fee per order. */
+  packagingFee: number;
+  /** Minimum order value before a small-order surcharge applies. */
+  minOrderValue: number;
+  /** Surcharge added when basket is below minOrderValue. */
+  smallOrderFee: number;
   avgEtaMin: number;
   website: string;
   logo: string; // public URL for brand logo
@@ -23,12 +29,12 @@ export type Platform = {
 const logoFor = (domain: string) => `/api/logo/${domain}`;
 
 export const platforms: Platform[] = [
-  { id: "zepto",            name: "Zepto",             shortName: "Zepto",      color: "#7e3af2", deliveryFee: 25, freeDeliveryAbove: 199, platformFee: 8,  handlingFee: 5, avgEtaMin: 10,  website: "https://www.zeptonow.com",         logo: zeptoLogo },
-  { id: "blinkit",          name: "Blinkit",           shortName: "Blinkit",    color: "#f8cb46", deliveryFee: 20, freeDeliveryAbove: 199, platformFee: 7,  handlingFee: 4, avgEtaMin: 11,  website: "https://blinkit.com",              logo: logoFor("blinkit.com") },
-  { id: "instamart",        name: "Swiggy Instamart",  shortName: "Instamart",  color: "#fc8019", deliveryFee: 29, freeDeliveryAbove: 249, platformFee: 10, handlingFee: 6, avgEtaMin: 15,  website: "https://www.swiggy.com/instamart", logo: swiggyLogo },
-  { id: "amazon-fresh",     name: "Amazon Fresh",      shortName: "Amazon Fresh", color: "#ff9900", deliveryFee: 30, freeDeliveryAbove: 299, platformFee: 0, handlingFee: 0, avgEtaMin: 120, website: "https://www.amazon.in/fresh",      logo: "https://images.seeklogo.com/logo-png/38/1/amazon-fresh-logo-png_seeklogo-386992.png" },
-  { id: "flipkart-minutes", name: "Flipkart Minutes",  shortName: "FK Minutes", color: "#2874f0", deliveryFee: 25, freeDeliveryAbove: 199, platformFee: 6,  handlingFee: 3, avgEtaMin: 12,  website: "https://www.flipkart.com/minutes", logo: flipkartLogo },
-  { id: "bb-now",           name: "BB Now",            shortName: "BB Now",     color: "#84c225", deliveryFee: 19, freeDeliveryAbove: 199, platformFee: 5,  handlingFee: 3, avgEtaMin: 15,  website: "https://www.bigbasket.com/bb-now", logo: "https://play-lh.googleusercontent.com/EuiZnkT8aEKjXDLX74DTp1VRIwWaeRa8Dvo-LOGAxy1FPQ8GzABTIRenksiM-A7Oz48g" },
+  { id: "zepto",            name: "Zepto",             shortName: "Zepto",      color: "#7e3af2", deliveryFee: 25, freeDeliveryAbove: 199, platformFee: 8,  handlingFee: 5, packagingFee: 2, minOrderValue: 99,  smallOrderFee: 20, avgEtaMin: 10,  website: "https://www.zeptonow.com",         logo: zeptoLogo },
+  { id: "blinkit",          name: "Blinkit",           shortName: "Blinkit",    color: "#f8cb46", deliveryFee: 20, freeDeliveryAbove: 199, platformFee: 7,  handlingFee: 4, packagingFee: 2, minOrderValue: 99,  smallOrderFee: 15, avgEtaMin: 11,  website: "https://blinkit.com",              logo: logoFor("blinkit.com") },
+  { id: "instamart",        name: "Swiggy Instamart",  shortName: "Instamart",  color: "#fc8019", deliveryFee: 29, freeDeliveryAbove: 249, platformFee: 10, handlingFee: 6, packagingFee: 3, minOrderValue: 149, smallOrderFee: 25, avgEtaMin: 15,  website: "https://www.swiggy.com/instamart", logo: swiggyLogo },
+  { id: "amazon-fresh",     name: "Amazon Fresh",      shortName: "Amazon Fresh", color: "#ff9900", deliveryFee: 30, freeDeliveryAbove: 299, platformFee: 0, handlingFee: 0, packagingFee: 0, minOrderValue: 250, smallOrderFee: 30, avgEtaMin: 120, website: "https://www.amazon.in/fresh",      logo: "https://images.seeklogo.com/logo-png/38/1/amazon-fresh-logo-png_seeklogo-386992.png" },
+  { id: "flipkart-minutes", name: "Flipkart Minutes",  shortName: "FK Minutes", color: "#2874f0", deliveryFee: 25, freeDeliveryAbove: 199, platformFee: 6,  handlingFee: 3, packagingFee: 2, minOrderValue: 99,  smallOrderFee: 20, avgEtaMin: 12,  website: "https://www.flipkart.com/minutes", logo: flipkartLogo },
+  { id: "bb-now",           name: "BB Now",            shortName: "BB Now",     color: "#84c225", deliveryFee: 19, freeDeliveryAbove: 199, platformFee: 5,  handlingFee: 3, packagingFee: 2, minOrderValue: 99,  smallOrderFee: 15, avgEtaMin: 15,  website: "https://www.bigbasket.com/bb-now", logo: "https://play-lh.googleusercontent.com/EuiZnkT8aEKjXDLX74DTp1VRIwWaeRa8Dvo-LOGAxy1FPQ8GzABTIRenksiM-A7Oz48g" },
 ];
 
 export const getPlatform = (id: string) => platforms.find((p) => p.id === id);
