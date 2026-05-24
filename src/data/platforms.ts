@@ -1,4 +1,4 @@
-import zeptoLogo from "@/assets/zepto-logo.jpg";
+import zeptoLogo from "@/assets/zepto-logo.png";
 import flipkartLogo from "@/assets/flipkart-logo.png";
 import swiggyLogo from "@/assets/swiggy-logo.jpg";
 
