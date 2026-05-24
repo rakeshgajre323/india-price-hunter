@@ -258,7 +258,8 @@ function ComparisonGrid({
 }: { parsed: ParsedProductLink; primary: MatchResult | undefined; pincode: string; onChangePincode: () => void }) {
   const productImage = primary?.product.imageRef?.url ?? placeholderImage(parsed.title).url;
 
-  const ranked: RankedRow[] = useMemo(() => {
+  type RankedWithAvailability = RankedRow & { availability: AvailabilityStatus };
+  const ranked: RankedWithAvailability[] = useMemo(() => {
     const rows = platforms.map((pl) => {
       // Item price: real catalog price if matched, otherwise pseudo from URL hash.
       const matched = primary?.product.prices.find((p) => p.platformId === pl.id);
@@ -463,8 +464,12 @@ function PlatformCheckoutCard({
   );
 }
 
-function PlatformHeader({ pl, etaMin, isSource, badges }: { pl: ReturnType<typeof getPlatform>; etaMin: number; isSource: boolean; badges: Badge[] }) {
+function PlatformHeader({ pl, etaMin, isSource, badges, confidence }: { pl: ReturnType<typeof getPlatform>; etaMin: number; isSource: boolean; badges: Badge[]; confidence: AvailabilityStatus["label"] }) {
   if (!pl) return null;
+  const confTone =
+    confidence === "Verified" ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30"
+    : confidence === "Limited Coverage" ? "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30"
+    : "bg-secondary text-muted-foreground border-border";
   return (
     <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-2.5">
       <div className="flex items-center gap-2 min-w-0">
@@ -479,7 +484,12 @@ function PlatformHeader({ pl, etaMin, isSource, badges }: { pl: ReturnType<typeo
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap justify-end gap-1" />
+      <div className="flex flex-wrap items-center justify-end gap-1">
+        <span className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${confTone}`}>
+          {confidence}
+        </span>
+        {badges.map((b) => <BadgeChip key={b} badge={b} />)}
+      </div>
     </header>
   );
 }
