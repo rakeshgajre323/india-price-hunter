@@ -90,12 +90,12 @@ function Index() {
             Price History &amp; Tracker
           </div>
           <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight md:text-6xl">
-            Stop Switching Apps
+            Paste a product link.
             <br />
-            <span className="text-emerald-300">to Compare Prices</span>
+            <span className="text-emerald-300">Compare every checkout total.</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-white/85 font-sans md:text-base">
-            Compare prices, delivery fees, and real offers across Blinkit, Zepto, Instamart, and more — instantly.
+            Item price + delivery + platform + handling + GST + surge — for your pincode, across Blinkit, Zepto, Instamart, BB Now, Flipkart Minutes and Amazon Fresh.
           </p>
 
           {/* Paste-link / search hero bar — pasted URLs route to /compare?url=, plain text to /search */}
