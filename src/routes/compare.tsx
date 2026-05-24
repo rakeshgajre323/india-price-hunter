@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { z } from "zod";
 import { Trash2, Plus, Minus, Trophy, Split, ShoppingCart } from "lucide-react";
 import { useBasket } from "@/lib/local-storage-hooks";
 import { getProduct } from "@/data/products";
@@ -9,6 +10,9 @@ import { PlatformChip } from "@/components/PlatformChip";
 import { LinkCompareBox } from "@/components/LinkCompareBox";
 
 export const Route = createFileRoute("/compare")({
+  validateSearch: z.object({
+    url: z.string().optional(),
+  }),
   head: () => ({
     meta: [
       { title: "Basket compare — find the cheapest app | QuickCompare India" },
@@ -21,6 +25,7 @@ export const Route = createFileRoute("/compare")({
 });
 
 function ComparePage() {
+  const { url } = Route.useSearch();
   const [basket, setBasket] = useBasket();
   const totals = basketTotals(basket, getProduct);
   const eligible = totals.filter((t) => t.subtotal > 0).sort((a, b) => a.total - b.total);
@@ -51,7 +56,7 @@ function ComparePage() {
       <p className="mt-1 text-sm text-muted-foreground">See which app gives you the cheapest total for your entire basket — delivery included.</p>
 
       <div className="mt-6">
-        <LinkCompareBox />
+        <LinkCompareBox initialUrl={url ?? ""} autoRun={Boolean(url)} />
       </div>
 
       {basket.length === 0 ? (

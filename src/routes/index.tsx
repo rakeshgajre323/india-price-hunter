@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   ArrowRight,
   Search,
@@ -19,6 +20,7 @@ import {
   Percent,
   Gift,
   ShoppingCart,
+  Link as LinkIcon2,
 } from "lucide-react";
 import { categories } from "@/data/categories";
 import { platforms } from "@/data/platforms";
@@ -26,6 +28,7 @@ import { products } from "@/data/products";
 import { ProductCard } from "@/components/ProductCard";
 import { LogoMarquee } from "@/components/LogoMarquee";
 import { savingsPercent } from "@/lib/compare";
+import { looksLikeUrl } from "@/lib/parse-product-link";
 import shoppingBanner from "@/assets/shopping-banner.jpg";
 
 export const Route = createFileRoute("/")({
@@ -52,6 +55,8 @@ const QUICK_LINKS = [
 ];
 
 function Index() {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
   const trending = [...products]
     .map((p) => ({ p, s: savingsPercent(p) }))
     .sort((a, b) => b.s - a.s)
@@ -93,17 +98,30 @@ function Index() {
             Compare prices, delivery fees, and real offers across Blinkit, Zepto, Instamart, and more — instantly.
           </p>
 
-          {/* Search bar */}
+          {/* Paste-link / search hero bar — pasted URLs route to /compare?url=, plain text to /search */}
           <form
             role="search"
-            action="/search"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const v = query.trim();
+              if (!v) return;
+              if (looksLikeUrl(v)) {
+                navigate({ to: "/compare", search: { url: v } });
+              } else {
+                navigate({ to: "/search", search: { q: v } });
+              }
+            }}
             className="relative mx-auto mt-8 flex max-w-3xl items-center overflow-hidden rounded-full bg-white pl-5 pr-1.5 py-1.5 shadow-2xl ring-1 ring-black/5"
           >
-            <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+            {looksLikeUrl(query)
+              ? <LinkIcon2 className="h-4 w-4 shrink-0 text-primary" />
+              : <Search className="h-4 w-4 shrink-0 text-muted-foreground" />}
             <input
               name="q"
               type="search"
-              placeholder="Paste any quick-commerce link to compare instantly"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Paste a Zepto / Blinkit / Instamart / BB / Flipkart Minutes / Amazon Fresh product link"
               className="ml-3 h-11 w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none font-mono border-2 border-double border-slate-50 shadow-sm rounded-md opacity-100"
             />
             <button
@@ -117,7 +135,7 @@ function Index() {
               type="submit"
               className="inline-flex h-11 items-center gap-1.5 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-md transition hover:opacity-90"
             >
-              <Search className="h-4 w-4" /> Search
+              {looksLikeUrl(query) ? (<><Sparkles className="h-4 w-4" /> Compare link</>) : (<><Search className="h-4 w-4" /> Search</>)}
             </button>
           </form>
 
