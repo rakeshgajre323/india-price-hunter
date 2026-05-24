@@ -159,7 +159,7 @@ function Index() {
               <Link
                 key={label}
                 to="/search"
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 bg-white px-3.5 py-1.5 text-xs font-medium text-foreground shadow-sm hover:border-primary hover:text-primary"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-900 shadow-sm hover:border-primary hover:text-primary"
               >
                 <ArrowRight className="h-3 w-3" /> {label}
               </Link>
@@ -445,7 +445,7 @@ function Index() {
 
       {/* Apps we compare — detail grid */}
       <section className="mx-auto max-w-7xl px-4 pt-14">
-        <div className="mt-4 font-semibold text-zinc-950">
+        <div className="mt-4">
           <div>
             <h2 className="text-2xl font-bold tracking-tight md:text-3xl">Apps we compare</h2>
             <p className="mt-1 text-sm text-muted-foreground">Live across India&apos;s biggest quick-commerce networks.</p>
