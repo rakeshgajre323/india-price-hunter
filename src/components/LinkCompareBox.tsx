@@ -8,7 +8,7 @@ import { parseProductLink, type ParsedProductLink } from "@/lib/parse-product-li
 import { matchProduct, type MatchResult } from "@/lib/match-product";
 import { formatQuantity } from "@/lib/normalize-product";
 import { usePincode, isValidPincode, pinHash } from "@/lib/services/pincode-service";
-import { validateAvailability } from "@/lib/services/availability-validator";
+import { validateAvailability, type AvailabilityStatus } from "@/lib/services/availability-validator";
 import { calculateCheckout, totalFees, type CheckoutBreakdown } from "@/lib/services/fee-calculator";
 import { rankPlatforms, BADGE_META, type Badge, type RankedRow } from "@/lib/services/ranking";
 import { placeholderImage } from "@/lib/product-image";
@@ -258,7 +258,8 @@ function ComparisonGrid({
 }: { parsed: ParsedProductLink; primary: MatchResult | undefined; pincode: string; onChangePincode: () => void }) {
   const productImage = primary?.product.imageRef?.url ?? placeholderImage(parsed.title).url;
 
-  const ranked: RankedRow[] = useMemo(() => {
+  type RankedWithAvailability = RankedRow & { availability: AvailabilityStatus };
+  const ranked: RankedWithAvailability[] = useMemo(() => {
     const rows = platforms.map((pl) => {
       // Item price: real catalog price if matched, otherwise pseudo from URL hash.
       const matched = primary?.product.prices.find((p) => p.platformId === pl.id);
@@ -276,15 +277,20 @@ function ComparisonGrid({
         availability,
       };
     });
-    return rankPlatforms(rows).map((r, i) => ({ ...r, _avail: rows[i].availability } as RankedRow & { _avail: ReturnType<typeof validateAvailability> }))
+    const ranked = rankPlatforms(rows);
+    // Re-attach availability + sort: available first (by effective total), unavailable last.
+    return ranked
+      .map((r, i) => ({ ...r, availability: rows[i].availability }))
       .sort((a, b) => {
-        // Available first, then by effective total.
         if (a.available !== b.available) return a.available ? -1 : 1;
         return a.breakdown.effectiveTotal - b.breakdown.effectiveTotal;
       });
   }, [parsed, primary, pincode]);
 
-  const cheapestTotal = Math.min(...ranked.filter(r => r.available).map(r => r.breakdown.effectiveTotal));
+  const availableRows = ranked.filter((r) => r.available);
+  const cheapestTotal = availableRows.length
+    ? Math.min(...availableRows.map((r) => r.breakdown.effectiveTotal))
+    : 0;
   const availableCount = ranked.filter((r) => r.available).length;
 
   return (
@@ -309,12 +315,25 @@ function ComparisonGrid({
         <div className="text-muted-foreground">Ranked by <span className="font-semibold text-foreground">effective checkout total</span></div>
       </div>
 
+      {availableCount === 0 && (
+        <div className="mb-4 flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-xs text-amber-700 dark:text-amber-300">
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          <div>
+            <div className="font-semibold">No app currently delivers to {pincode}.</div>
+            <div className="mt-0.5 opacity-90">
+              Quick-commerce in India is concentrated in tier-1 metros and major tier-2 cities. Try a metro pincode (e.g. 560001 Bengaluru, 400001 Mumbai, 110001 Delhi) to see a live comparison.
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Cards grid */}
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {ranked.map((row) => (
           <PlatformCheckoutCard
             key={row.breakdown.platformId}
             row={row}
+            availability={row.availability}
             cheapestTotal={cheapestTotal}
             productImage={productImage}
             searchQuery={parsed.title}
@@ -322,6 +341,12 @@ function ComparisonGrid({
           />
         ))}
       </div>
+
+      {/* Disclaimer */}
+      <p className="mt-4 flex items-start gap-1.5 text-[11px] leading-relaxed text-muted-foreground">
+        <AlertCircle className="mt-0.5 h-3 w-3 shrink-0" />
+        Availability estimates are based on each platform's known service zones and may vary in real time. Always confirm on the app before checkout.
+      </p>
     </div>
   );
 }
@@ -329,9 +354,10 @@ function ComparisonGrid({
 /* ----------------------------- platform card ----------------------------- */
 
 function PlatformCheckoutCard({
-  row, cheapestTotal, productImage, searchQuery, isSource,
+  row, availability, cheapestTotal, productImage, searchQuery, isSource,
 }: {
   row: RankedRow;
+  availability: AvailabilityStatus;
   cheapestTotal: number;
   productImage: string;
   searchQuery: string;
@@ -344,18 +370,26 @@ function PlatformCheckoutCard({
 
   if (!row.available) {
     return (
-      <article className="flex flex-col rounded-xl border border-border bg-card opacity-70">
-        <PlatformHeader pl={pl} etaMin={row.etaMin} isSource={isSource} badges={[]} />
-        <div className="flex flex-1 items-center gap-3 px-4 py-4 text-xs">
+      <article className="flex flex-col rounded-xl border border-border bg-card opacity-60 grayscale">
+        <PlatformHeader pl={pl} etaMin={0} isSource={isSource} badges={[]} confidence={availability.label} />
+        <div className="flex flex-1 items-start gap-3 px-4 py-4 text-xs">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-secondary/50 p-1">
             <img src={productImage} alt="" className="h-full w-full object-contain grayscale" />
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-1.5 font-semibold text-destructive">
-              <X className="h-3.5 w-3.5" /> Not deliverable to your location
+              <X className="h-3.5 w-3.5" /> Not Deliverable
             </div>
-            <div className="mt-0.5 text-muted-foreground">Try a different pincode or check back later.</div>
+            <div className="mt-0.5 text-muted-foreground">
+              {availability.reason ?? "Outside this platform's known service zone."}
+            </div>
+            <div className="mt-1 text-[10px] uppercase tracking-wider text-muted-foreground">
+              Coverage: {availability.coverageSummary}
+            </div>
           </div>
+        </div>
+        <div className="flex items-center justify-center gap-1.5 rounded-b-xl border-t border-border bg-secondary/30 px-4 py-2.5 text-xs font-semibold text-muted-foreground">
+          Not available in {pl.shortName}
         </div>
       </article>
     );
@@ -363,7 +397,7 @@ function PlatformCheckoutCard({
 
   return (
     <article className={`flex flex-col rounded-xl border bg-card transition ${featured ? "border-primary shadow-sm" : "border-border hover:border-foreground/20"}`}>
-      <PlatformHeader pl={pl} etaMin={row.etaMin} isSource={isSource} badges={row.badges} />
+      <PlatformHeader pl={pl} etaMin={row.etaMin} isSource={isSource} badges={row.badges} confidence={availability.label} />
 
       {/* product + headline price */}
       <div className="flex items-center gap-3 px-4 py-3">
@@ -430,8 +464,12 @@ function PlatformCheckoutCard({
   );
 }
 
-function PlatformHeader({ pl, etaMin, isSource, badges }: { pl: ReturnType<typeof getPlatform>; etaMin: number; isSource: boolean; badges: Badge[] }) {
+function PlatformHeader({ pl, etaMin, isSource, badges, confidence }: { pl: ReturnType<typeof getPlatform>; etaMin: number; isSource: boolean; badges: Badge[]; confidence: AvailabilityStatus["label"] }) {
   if (!pl) return null;
+  const confTone =
+    confidence === "Verified" ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30"
+    : confidence === "Limited Coverage" ? "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30"
+    : "bg-secondary text-muted-foreground border-border";
   return (
     <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-2.5">
       <div className="flex items-center gap-2 min-w-0">
@@ -441,12 +479,15 @@ function PlatformHeader({ pl, etaMin, isSource, badges }: { pl: ReturnType<typeo
         <div className="min-w-0">
           <div className="truncate text-sm font-semibold tracking-tight">{pl.name}</div>
           <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-            <Timer className="h-2.5 w-2.5" /> ~{etaMin} min
+            {etaMin > 0 ? (<><Timer className="h-2.5 w-2.5" /> ~{etaMin} min</>) : <span className="opacity-60">No ETA</span>}
             {isSource && <span className="ml-1 rounded bg-secondary px-1 py-px font-semibold text-foreground">Your link</span>}
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap justify-end gap-1">
+      <div className="flex flex-wrap items-center justify-end gap-1">
+        <span className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${confTone}`}>
+          {confidence}
+        </span>
         {badges.map((b) => <BadgeChip key={b} badge={b} />)}
       </div>
     </header>
