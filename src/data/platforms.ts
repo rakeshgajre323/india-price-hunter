@@ -1,4 +1,5 @@
 import zeptoLogo from "@/assets/zepto-logo.jpg";
+import flipkartLogo from "@/assets/flipkart-logo.png";
 
 export type Platform = {
   id: string;
